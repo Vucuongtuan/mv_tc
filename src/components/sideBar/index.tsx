@@ -1,33 +1,23 @@
-"use client";
-import { RootState } from "@/lib/redux";
-import { changeAction } from "@/lib/redux/sideBarReducer";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
-import Cookies from "js-cookie";
+import React from "react";
 import LinkRouter from "./linkRouter";
+
 export default function SideBar() {
   return (
-    <div
-      className={`w-[80px] h-full max-w-[300px] fixed top-0 left-0 border-r-2 border-[rgba(255, 255, 255, 0.6576681698069853)]  transition-all duration-500 hidden md:block`}
-    >
-      <div className="w-full h-1/6 px-2  overflow-hidden">
-        <div className="flex justify-center items-center py-4 transition-all duration-200 overflow-hidden">
-          <Image
-            src={"/logo-512x512.png"}
-            alt={"TC Phim"}
-            height={512}
-            width={512}
-            className={`h-full w-full  pl-2 `}
-          />
-        </div>
+    <aside className="w-[80px] h-screen fixed top-0 left-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-r border-border/40 shadow-sm hidden md:block">
+      {/* Logo section */}
+      <div className="h-20 flex items-center justify-center p-4">
+        <Image
+          src="/logo-512x512.png"
+          alt="TC Phim"
+          height={48}
+          width={48}
+          className="object-contain transition-all duration-200 hover:scale-110"
+        />
       </div>
+
+      {/* Navigation Links */}
       <LinkRouter />
-    </div>
+    </aside>
   );
 }

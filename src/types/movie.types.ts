@@ -9,6 +9,11 @@ export interface IMovieData {
   modified: {
     time: string;
   };
+  trailer_url: string;
+  actor: string[];
+  director: any;
+  content: string;
+  episodes: any;
   _id: string;
   name: string;
   slug: string;

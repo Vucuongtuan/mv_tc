@@ -1,8 +1,9 @@
 import React from "react";
 import ViewDetailsHero from "./component/viewDetailHero";
-import { getDetailMovie } from "@/api/movie.api";
+import { getDetailMovie, getDetailMovieServer2 } from "@/api/movie.api";
 import { cookies } from "next/headers";
 import { Metadata, ResolvingMetadata } from "next";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -31,6 +32,9 @@ export default async function DetailMovie({
   params: Promise<{ slug: string }>;
 }) {
   const data = await getDetailMovie((await params).slug);
+  const data2 = await getDetailMovieServer2((await params).slug);
+  console.log(data);
+
   const token = (await cookies()).get("token")?.value;
   return (
     <main className="w-full h-auto min-h-[1500px] px-2 ">
@@ -40,6 +44,7 @@ export default async function DetailMovie({
           url={process.env.BASE_IMAGE_URL}
           token={token}
         />
+
       </div>
     </main>
   );
