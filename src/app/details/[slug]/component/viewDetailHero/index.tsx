@@ -182,9 +182,7 @@ export default function ViewDetailsHero({
 
                   </div>
                   <div className="  mt-2 gap-2 sm:gap-3">
-                    <Link href={`/phim/${data.item.slug}/${data.item.episodes[0].server_data[0].slug === "full"
-                      ? "full"
-                      : `tap-1`
+                    <Link href={`/phim/${data.item.slug}/${data.item.episodes[0].server_data[0].slug
                       }`} className="w-full flex px-2 py-3 items-center justify-center rounded-md sm:w-auto bg-red-600 hover:bg-red-700 text-white">
                       <Play className=" h-4 w-4 md:h-5 md:w-5" />
                     </Link>
@@ -298,12 +296,7 @@ export default function ViewDetailsHero({
                 <div className="space-y-3 md:space-y-4">
                   {[...data.item.episodes[0].server_data].reverse().map((epi: { filename: string, name: string, slug: string }) => (
                     <Link
-                      href={`/phim/${data.item.slug}/${data.item.episodes[0].server_data[0].slug === "full"
-                        ? "full"
-                        : epi.slug.includes("tap")
-                          ? epi.slug
-                          : `tap-${epi.slug}`
-                        }`}
+                      href={`/phim/${data.item.slug}/${epi.slug}`}
                       key={epi.slug}
                       className={cn(
                         "flex flex-col sm:flex-row gap-3 md:gap-4 p-3 md:p-4 rounded-xl border border-gray-800 hover:bg-gray-900/50 transition-colors",
@@ -347,7 +340,7 @@ export default function ViewDetailsHero({
                     <div key={i} className="group">
                       <div className="relative aspect-[2/3] rounded-lg overflow-hidden mb-2">
                         <Image
-                          src={`/placeholder.svg?height=300&width=200&text=Similar+${i + 1}`}
+                          src={`/ placeholder.svg ? height = 300 & width= 200 & text=Similar+${i + 1}`}
                           alt={`Similar show ${i + 1}`}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -368,8 +361,8 @@ export default function ViewDetailsHero({
               </TabsContent>
             </Tabs>
           </div>
-        </main>
-      </div>
+        </main >
+      </div >
       {/* <section
         className={`h-auto w-full  flex min-[200px]:max-lg:flex-col  transition-all absolute  duration-500 z-50 ${onTrailer ? "mt-0 px-0" : "-mt-36 px-4"
           }`}
@@ -493,7 +486,7 @@ export default function ViewDetailsHero({
           </p>
         </div>
       </section> */}
-    </div>
+    </div >
   );
 }
 {/* <div className="relative">

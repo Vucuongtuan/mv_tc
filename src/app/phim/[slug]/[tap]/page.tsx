@@ -15,37 +15,42 @@ export default async function Phim({
       getDetailMovie(slug),
       getDetailMovieServer2(slug)
     ]);
-
-    // Validate server responses
     const server1Data = resServer1?.data?.item;
     const server2Data = resServer2?.movie;
     const episodes1 = server1Data?.episodes?.[0]?.server_data;
     const episodes2 = resServer2?.episodes?.[0]?.server_data;
 
-    if (!episodes1 && !episodes2) {
+    if (!episodes1) {
       throw new Error("No valid episode data found");
     }
 
-    const tapp = tap ? parseInt(tap.split("-")[1]?.trim()) : 1;
     const tapMovie = episodes1 || [];
     const tapMovie2 = episodes2 || [];
+    console.log(episodes2);
 
     const tapResult = () => {
-      if (tap === "full") {
-        return {
-          link1: tapMovie[0] || null,
-          link2: tapMovie2[0] || null,
-        };
-      } else if (tap.includes("tap")) {
-        const episode = tapMovie.find((ep: any) => parseInt(ep.name) === tapp);
-        const episode2 = tapMovie2.find((ep: any) => parseInt(ep.name) === tapp);
-        return {
-          link1: episode || null,
-          link2: episode2 || null,
-        };
+      const episode = tapMovie.find((ep: any) => ep.slug === tap);
+      const episode2 = tapMovie2.find((ep: any) => ep.slug === tap);
+      return {
+        link1: episode || [],
+        link2: episode2 || [],
       }
-      return { link1: null, link2: null };
+      // if (tap === "full") {
+      //   return {
+      //     link1: tapMovie[0] || null,
+      //     link2: tapMovie2[0] || null,
+      //   };
+      // } else {
+      //   const episode = tapMovie.find((ep: any) => ep.slug === tap);
+      //   const episode2 = tapMovie2.find((ep: any) => ep.slug === tap);
+      //   return {
+      //     link1: episode || null,
+      //     link2: episode2 || null,
+      //   };
+      // }
     };
+    console.log("asdasd");
+    console.log(tapResult());
 
     return (
       <div className="w-3/4 h-full min-[200px]:max-lg:w-full">
@@ -77,12 +82,12 @@ export default async function Phim({
             <span className="">{resServer1.data.item.lang || resServer2.movie.lang}</span>
           </p>{" "}
           <p className="dark:text-white font-semibold">
-            {(resServer1.data.item.country || resServer2.movie.country).map((country: any) => (
+            {(server1Data?.country || server2Data?.country || []).map((country: any) => (
               <span key={country.id}>Quốc gia : {country.name}</span>
             ))}
           </p>
           <p className="flex flex-wrap mt-2 dark:text-white font-semibold">
-            {(resServer1.data.item.category || resServer2.movie.category).map((category: any) => (
+            {(server1Data?.category || server2Data?.category || []).map((category: any) => (
               <Link
                 href={`/loc-phim/phim-moi?sort_field=modified.time&category=${category.slug}&country=&year=&page=1`}
                 key={category.id}
@@ -93,23 +98,19 @@ export default async function Phim({
             ))}
           </p>
           <p>
-            {" "}
             <span className="">
               Đạo diễn :{" "}
-              {resServer1.data.item?.director
+              {(server1Data?.director || server2Data?.director || [])
                 .map((director: any) => director)
-                .join(", ") || resServer2.movie.director.map((director: any) => director)
-                  .join(", ")}
+                .join(", ")}
             </span>
           </p>
           <p>
             <span className="">
               Diễn viên :{" "}
-              {resServer1.data.item?.actor &&
-                resServer1.data.item?.actor.map((actor: any) => actor).join(", ") ||
-                resServer2.movie?.actor &&
-                resServer2.movie?.actor.map((actor: any) => actor).join(", ")
-              }
+              {(server1Data?.actor || server2Data?.actor || [])
+                .map((actor: any) => actor)
+                .join(", ")}
             </span>
           </p>
           <p className="mt-1">
@@ -123,9 +124,12 @@ export default async function Phim({
       </div>
     );
   } catch (error) {
+    console.error(error);
+
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <h1 className="text-2xl">Unable to load movie data</h1>
+        <h1 className="text-2xl">Unable to load movie data </h1>
+        <p>{JSON.stringify(error)}</p>
       </div>
     );
   }

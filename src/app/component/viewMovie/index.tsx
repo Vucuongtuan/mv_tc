@@ -52,6 +52,8 @@ export default function ViewMovie({ link }: { link: { link1: IViewMovieProps, li
     min-[200px]:max-md:px-2 min-[200px]:max-md:py-1 min-[200px]:max-md:text-sm
     ${isActive ? "cursor-not-allowed" : ""}`;
 
+  console.log(link);
+
   return (
     <section className="h-full mb-2">
       <div className="h-[90%] w-full">

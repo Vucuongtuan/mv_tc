@@ -33,7 +33,6 @@ export default async function DetailMovie({
 }) {
   const data = await getDetailMovie((await params).slug);
   const data2 = await getDetailMovieServer2((await params).slug);
-  console.log(data);
 
   const token = (await cookies()).get("token")?.value;
   return (
