@@ -41,7 +41,7 @@ export default async function PhimLayout({
     getDetailMovieServer2(slug)
   ]);
   const tapMovie1 = resServer1.data.item.episodes[0].server_data;
-  const tapMovie2 = resServer2.episodes[0].server_data;
+  const tapMovie2 = resServer2.episodes[0]?.server_data || [];
   const longerTapMovie = tapMovie1.length >= tapMovie2.length ? tapMovie1 : tapMovie2;
 
   return (

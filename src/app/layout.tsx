@@ -13,25 +13,18 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "TC Phim | Phim mới | Trực tuyến | Phim hay | Phim chiếu rạp",
-  description: "TC Phim - Đem đến cho mọi người những bộ phim mới và phổ biến ",
-  openGraph: {
-    title: "TC Phim | Phim mới | Trực tuyến | Phim hay | Phim chiếu rạp",
-    description:
-      "TC Phim - Đem đến cho mọi người những bộ phim mới và phổ biến ",
-    images: [
-      {
-        url: "/logoFull.png",
-      },
-    ],
+  metadataBase: new URL(process.env.URL || 'http://localhost:3000'),
+  title: {
+    default: 'TC Phim',
+    template: '%s | TC Phim'
   },
-};
+  description: 'Watch movies online',
+}
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookie = await cookies();
   return (
     <html lang="en">
       <body

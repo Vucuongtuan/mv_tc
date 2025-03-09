@@ -7,33 +7,27 @@ import React, { useEffect } from "react";
 export default function CheckPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  localStorage.setItem(
-    "profileUser",
-    JSON.stringify({
-      email: session && session.user && session.user.email,
-      name: session && session.user && session.user.name,
-    })
-  );
+
   useEffect(() => {
+    if (typeof window !== 'undefined' && session?.user) {
+      localStorage.setItem(
+        "profileUser",
+        JSON.stringify({
+          email: session.user.email,
+          name: session.user.name,
+        })
+      );
+    }
+
     const time = setTimeout(() => {
       router.push("/");
     }, 2000);
+
     return () => clearTimeout(time);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session, router]);
+
   return (
-    <div
-      className="z-50 absolute top-0 left-0 bg-black w-full h-full"
-      style={{
-        position: "absolute",
-        backgroundColor: "black",
-        height: "100%",
-        width: "100%",
-        top: "0",
-        left: "0",
-        zIndex: "99",
-      }}
-    >
+    <div className="fixed inset-0 bg-black z-50">
       <Skeleton className="w-full h-full" />
     </div>
   );

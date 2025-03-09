@@ -1,8 +1,6 @@
 import { profile } from "console";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
-// FACEBOOK_APP_ID = 1106710467103176
-// FACEBOOK_APP_SECRET =282fe115798957dc074dd0b6605b3b94
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -32,7 +30,9 @@ const authOptions: NextAuthOptions = {
       },
     }),
   ],
-
+  
+  secret: process.env.NEXTAUTH_SECRET,
+  
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
