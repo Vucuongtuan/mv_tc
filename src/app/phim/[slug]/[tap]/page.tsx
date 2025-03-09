@@ -26,11 +26,19 @@ export default async function Phim({
 
     const tapMovie = episodes1 || [];
     const tapMovie2 = episodes2 || [];
-    console.log(episodes2);
+    // console.log("episodes2 : ", episodes2);
 
     const tapResult = () => {
       const episode = tapMovie.find((ep: any) => ep.slug === tap);
-      const episode2 = tapMovie2.find((ep: any) => ep.slug === tap);
+      const episode2 = tapMovie2.find((ep: any) => {
+
+        if (tap === "full") return ep.slug === "full";
+        const epNumber = ep.slug.split("-")[1];
+        const cleanEpNumber = epNumber.replace(/^0+/, '');
+
+        return cleanEpNumber === tap;
+      });
+
       return {
         link1: episode || [],
         link2: episode2 || [],
@@ -49,8 +57,7 @@ export default async function Phim({
       //   };
       // }
     };
-    console.log("asdasd");
-    console.log(tapResult());
+
 
     return (
       <div className="w-3/4 h-full min-[200px]:max-lg:w-full">

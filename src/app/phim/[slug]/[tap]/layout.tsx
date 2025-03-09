@@ -35,7 +35,7 @@ export default async function PhimLayout({
   params: Promise<{ slug: string; tap: string }>;
 }>) {
   const { slug, tap } = await params
-  const tapp = tap ? parseInt(tap.split("-")[1]?.trim()) : 1;
+
   const [resServer1, resServer2] = await Promise.all([
     getDetailMovie(slug),
     getDetailMovieServer2(slug)
@@ -52,10 +52,10 @@ export default async function PhimLayout({
           <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 p-4">
             {longerTapMovie.map((item: IMovieTap) => (
               <Link
-                href={`/phim/${resServer1.data.item.slug}/tap-${item.slug}`}
+                href={`/phim/${resServer1.data.item.slug}/${item.slug}`}
                 key={item.slug}
                 className={`p-2 text-center rounded-lg transition-all hover:bg-red-500 hover:text-white
-                  ${tapp.toString() === item.slug
+                  ${tap.toString() === item.slug
                     ? "bg-red-600 text-white"
                     : "bg-gray-100 text-gray-800"}`}
               >
@@ -74,10 +74,10 @@ export default async function PhimLayout({
               <div className="grid grid-cols-4 gap-2 p-3">
                 {longerTapMovie.map((item: IMovieTap) => (
                   <Link
-                    href={`/phim/${resServer1.data.item.slug}/tap-${item.slug}`}
+                    href={`/phim/${resServer1.data.item.slug}/${item.slug}`}
                     key={item.slug}
                     className={`flex items-center justify-center p-2 rounded-md transition-all hover:bg-red-500 hover:text-white
-                      ${tapp.toString() === item.slug
+                      ${tap.toString() === item.slug
                         ? "bg-red-600 text-white"
                         : "bg-gray-100 text-gray-800"}`}
                   >
