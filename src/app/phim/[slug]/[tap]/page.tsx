@@ -56,11 +56,69 @@ export default async function Phim({
         </div>
         <div className="w-full h-auto mt-2">
           <h1 className="text-4xl py-3 font-semibold min-[200px]:max-md:text-3xl">
-            {server1Data?.name || server2Data?.name} |{" "}
+            {server1Data?.name || server2Data?.name} |
             {tap === "full" ? "Full" : `Tập ${tap}`}
           </h1>
-          {/* Rest of your JSX remains the same, just replace resServer1.data.item with server1Data 
-              and resServer2.movie with server2Data */}
+          <p>
+            <label
+              className="text-lg dark:text-white font-semibold"
+              htmlFor={resServer1.data.item.origin_name || resServer2.movie.origin_name}
+            >
+              {resServer1.data.item.origin_name || resServer2.movie.origin_name}
+            </label>
+          </p>
+          <p className="dark:text-white font-semibold">
+            <span className="">{resServer1.data.item.episode_current || resServer2.movie.episode_current}</span>
+            {"  | "}
+            <span className="">{resServer1.data.item.time || resServer2.movie.time}</span>
+            {"  | "}
+            <span className="">{resServer1.data.item.year || resServer2.movie.year}</span>
+            {"  | "}
+            <span className="">{resServer1.data.item.lang || resServer2.movie.lang}</span>
+          </p>{" "}
+          <p className="dark:text-white font-semibold">
+            {(resServer1.data.item.country || resServer2.movie.country).map((country: any) => (
+              <span key={country.id}>Quốc gia : {country.name}</span>
+            ))}
+          </p>
+          <p className="flex flex-wrap mt-2 dark:text-white font-semibold">
+            {(resServer1.data.item.category || resServer2.movie.category).map((category: any) => (
+              <Link
+                href={`/loc-phim/phim-moi?sort_field=modified.time&category=${category.slug}&country=&year=&page=1`}
+                key={category.id}
+                className="w-auto h-auto min-w-[80px] mr-2 mb-2 px-2 min-h-[20px] text-center rounded-full border border-[#909090]"
+              >
+                {category.name}
+              </Link>
+            ))}
+          </p>
+          <p>
+            {" "}
+            <span className="">
+              Đạo diễn :{" "}
+              {resServer1.data.item?.director
+                .map((director: any) => director)
+                .join(", ") || resServer2.movie.director.map((director: any) => director)
+                  .join(", ")}
+            </span>
+          </p>
+          <p>
+            <span className="">
+              Diễn viên :{" "}
+              {resServer1.data.item?.actor &&
+                resServer1.data.item?.actor.map((actor: any) => actor).join(", ") ||
+                resServer2.movie?.actor &&
+                resServer2.movie?.actor.map((actor: any) => actor).join(", ")
+              }
+            </span>
+          </p>
+          <p className="mt-1">
+            {" "}
+            <div
+              className=" "
+              dangerouslySetInnerHTML={{ __html: resServer1.data.item.content || resServer2.movie.content }}
+            ></div>
+          </p>
         </div>
       </div>
     );
