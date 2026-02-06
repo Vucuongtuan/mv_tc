@@ -36,7 +36,6 @@ const LayoutWithProvider = ({ children }: { children: React.ReactNode }) => {
     <div className="w-full min-h-screen bg-[#f8fafc] dark:bg-[#1c1c1e]">
       <SideBar />
       <div className="transition-all duration-500 w-full md:w-[calc(100%-80px)] md:ml-[80px]">
-        <NavBar />
         <main className=" pt-28 md:pt-16">
           {children}
         </main>

@@ -29,7 +29,7 @@ export default function CarouselSize({ data }: { data: any }) {
               key={item._id}
               className="basis-1/3  md:basis-1/4 lg:basis-1/5 xl:basis-1/6 group relative"
             >
-              <BlurFade delay={0.25 + index * 0.05} inView className="h-full">
+              <div  className="h-full">
                 <div className="h-full w-full">
                   <Card
                     className="h-full w-full rounded-md overflow-hidden relative border-0 shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -68,7 +68,7 @@ export default function CarouselSize({ data }: { data: any }) {
                     </div>
                   </Card>
                 </div>
-              </BlurFade>
+              </div>
             </CarouselItem>
           ))}
       </CarouselContent>
