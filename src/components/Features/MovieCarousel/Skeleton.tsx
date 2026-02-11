@@ -12,6 +12,7 @@ const MovieCarouselSkeleton: React.FC<MovieCarouselSkeletonProps> = ({
   gap = 16,
   count = 10,
 }) => {
+  
   return (
     <div className={styles.carouselWrapper} aria-hidden="true">
       <div className={styles.carouselContainer}>

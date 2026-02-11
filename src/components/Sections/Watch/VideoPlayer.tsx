@@ -3,13 +3,14 @@
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import { 
   Play, Pause, Volume2, VolumeX, Settings, PictureInPicture, 
-  Cast, SkipBack, SkipForward, Maximize, Minimize, 
-  Check, Server,
+  SkipBack, SkipForward, Maximize, Minimize, 
+  Check, 
   Loader2
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import st from './video-player.module.scss';
 import Placeholder from './Plaholder';
+import { useAmbientMode } from '@/hooks/useAmbientMode';
 
 interface VideoPlayerProps {
   src: string;
@@ -37,6 +38,8 @@ interface SettingsTooltipProps {
   servers?: any[];
   selectedServerIndex?: number;
   onServerChange?: (index: number) => void;
+  isAmbientMode: boolean;
+  onToggleAmbientMode: () => void;
 }
 
 const SettingsTooltip = memo(({ 
@@ -49,7 +52,9 @@ const SettingsTooltip = memo(({
   position,
   servers,
   selectedServerIndex,
-  onServerChange
+  onServerChange,
+  isAmbientMode,
+  onToggleAmbientMode
 }: SettingsTooltipProps) => {
   const [activeTab, setActiveTab] = useState<'speed' | 'ratio' | 'server'>(servers ? 'server' : 'speed');
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -98,6 +103,15 @@ const SettingsTooltip = memo(({
           onClick={() => setActiveTab('ratio')}
         >
           Tỷ lệ
+        </button>
+        <button
+          className={clsx(st.settingsTab, activeTab === 'ambient' && st.active)}
+          onClick={() => {
+            onToggleAmbientMode();
+            onClose();
+          }}
+        >
+          {isAmbientMode ? 'Tắt Ambient' : 'Bật Ambient'}
         </button>
       </div>
 
@@ -289,6 +303,23 @@ export default function VideoPlayer({
   const lastTimeUpdateRef = useRef(0);
 
   const [useEmbed, setUseEmbed] = useState(() => !src || src.trim() === '' && !!embedUrl);
+  const [isAmbientMode, setIsAmbientMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('ambient-mode') === 'true';
+    }
+    return false;
+  });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useAmbientMode(videoRef, canvasRef, isAmbientMode);
+
+  const toggleAmbientMode = useCallback(() => {
+    setIsAmbientMode((prev:any) => {
+        const next = !prev;
+        localStorage.setItem('ambient-mode', String(next));
+        return next;
+    });
+  }, []);
 
   useEffect(() => {
     if (!src || src.trim() === '') {
@@ -529,7 +560,6 @@ export default function VideoPlayer({
     setAspectRatio(ratio);
   }, []);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement) return;
@@ -601,196 +631,203 @@ export default function VideoPlayer({
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && !showSettings && setShowControls(false)}
     >
-      {isLoading && (
-        <div className={st.loadingState}>
-          <div className="absolute inset-0 ">
-            <Placeholder/>
-          </div>
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
-            <p className={st.loadingText}>Bạn đang xem phim tại: TC Phim</p>
-            <p className={st.subText}>Chúc bạn xem phim vui vẻ!</p>
-            <div className="flex items-center gap-2">
-              <Loader2 className="animate-spin" />
-              <p>Đang tải phim...</p>
+      {!useEmbed && isAmbientMode && (
+        <div className={st.ambientContainer}>
+            <canvas
+                ref={canvasRef}
+                width={100} 
+                height={56}
+                className={st.ambientCanvas}
+            />
+        </div>
+      )}
+
+      <div className={st.mainPlayerContent}>
+        {isLoading && (
+          <div className={st.loadingState}>
+            <div className="absolute inset-0 ">
+              <Placeholder/>
+            </div>
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
+              <p className={st.loadingText}>Bạn đang xem phim tại: TC Phim</p>
+              <p className={st.subText}>Chúc bạn xem phim vui vẻ!</p>
+              <div className="flex items-center gap-2">
+                <Loader2 className="animate-spin" />
+                <p>Đang tải phim...</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      
-      {useEmbed ? (
-        <iframe
-          src={embedUrl}
-          className="w-full h-full border-0 absolute inset-0 z-10"
-          allowFullScreen
-          onLoad={() => setIsLoading(false)}
-        />
-      ) : (
-        <video
-          ref={videoRef}
-          className={st.video}
-          style={{ objectFit: videoObjectFit }}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleLoadedMetadata}
-          onEnded={handleEnded}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          onWaiting={() => setIsLoading(true)}
-          onCanPlay={() => setIsLoading(false)}
-          onError={handleVideoError} // Thêm xử lý lỗi
-          src={src}
-          poster={poster}
-          preload="metadata"
-          playsInline
-        />
-      )}
-
-      {!useEmbed && !isPlaying && !isLoading && (
-        <button 
-          className={st.centerPlayBtn}
-          onClick={togglePlay}
-          aria-label="Play"
-        >
-          <CenterPlayIcon />
-        </button>
-      )}
-
-      {/* Chỉ hiện Controls Overlay khi KHÔNG PHẢI là Embed (để iframe nhận click) */}
-      {!useEmbed && (
-      <div 
-        className={clsx(
-          st.controlsOverlay, 
-          (showControls || showSettings || !isPlaying) && st.visible
         )}
-      >
-        <div className={st.gradientOverlay} />
-
-        <div 
-          className={clsx(st.progressBar, "group/progress")} 
-          onClick={handleProgressClick}
-        >
-          <div className={st.bufferFill} style={{ width: `${buffered}%` }} />
-          <div 
-            className={st.progressFill} 
-            style={{ width: progressWidth }} 
+        
+        {useEmbed ? (
+          <iframe
+            src={embedUrl}
+            className="w-full h-full border-0 absolute inset-0 z-10"
+            allowFullScreen
+            onLoad={() => setIsLoading(false)}
           />
-        </div>
+        ) : (
+          <video
+            ref={videoRef}
+            className={st.video}
+            style={{ objectFit: videoObjectFit }}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleEnded}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onWaiting={() => setIsLoading(true)}
+            onCanPlay={() => setIsLoading(false)}
+            onError={handleVideoError}
+            src={src}
+            poster={poster}
+            preload="metadata"
+            playsInline
+          />
+        )}
 
-        <div className={st.controlBar}>
-          <div className={st.leftControls}>
-              <>
-                <button 
-                  onClick={togglePlay} 
-                  className={st.controlBtn}
-                  aria-label={isPlaying ? 'Pause' : 'Play'}
-                >
-                  {isPlaying ? <PauseIcon /> : <PlayIcon />}
-                </button>
+        {!useEmbed && !isPlaying && !isLoading && (
+          <button 
+            className={st.centerPlayBtn}
+            onClick={togglePlay}
+            aria-label="Play"
+          >
+            <CenterPlayIcon />
+          </button>
+        )}
 
-                <button 
-                  onClick={() => skip(-10)}
-                  className={st.controlBtn}
-                  aria-label="Skip backward 10 seconds"
-                >
-                  <SkipBack size={20} />
-                </button>
+        {!useEmbed && (
+          <div 
+            className={clsx(
+              st.controlsOverlay, 
+              (showControls || showSettings || !isPlaying) && st.visible
+            )}
+          >
+            <div className={st.gradientOverlay} />
 
-                <button 
-                  onClick={() => skip(10)}
-                  className={st.controlBtn}
-                  aria-label="Skip forward 10 seconds"
-                >
-                  <SkipForward size={20} />
-                </button>
-                
-                <div className={clsx(st.volumeControl, "group/vol")}>
-                  <button 
-                    onClick={toggleMute}
-                    className={st.controlBtn}
-                    aria-label={isMuted ? 'Unmute' : 'Mute'}
-                  >
-                    {isMuted || volume === 0 ? (
-                      <VolumeX size={20} />
-                    ) : (
-                      <Volume2 size={20} />
+            <div 
+              className={clsx(st.progressBar, "group/progress")} 
+              onClick={handleProgressClick}
+            >
+              <div className={st.bufferFill} style={{ width: `${buffered}%` }} />
+              <div 
+                className={st.progressFill} 
+                style={{ width: progressWidth }} 
+              />
+            </div>
+
+            <div className={st.controlBar}>
+              <div className={st.leftControls}>
+                  <>
+                    <button 
+                      onClick={togglePlay} 
+                      className={st.controlBtn}
+                      aria-label={isPlaying ? 'Pause' : 'Play'}
+                    >
+                      {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                    </button>
+
+                    <button 
+                      onClick={() => skip(-10)}
+                      className={st.controlBtn}
+                      aria-label="Skip backward 10 seconds"
+                    >
+                      <SkipBack size={20} />
+                    </button>
+
+                    <button 
+                      onClick={() => skip(10)}
+                      className={st.controlBtn}
+                      aria-label="Skip forward 10 seconds"
+                    >
+                      <SkipForward size={20} />
+                    </button>
+                    
+                    <div className={clsx(st.volumeControl, "group/vol")}>
+                      <button 
+                        onClick={toggleMute}
+                        className={st.controlBtn}
+                        aria-label={isMuted ? 'Unmute' : 'Mute'}
+                      >
+                        {isMuted || volume === 0 ? (
+                          <VolumeX size={20} />
+                        ) : (
+                          <Volume2 size={20} />
+                        )}
+                      </button>
+                      <div className={st.volSliderWrapper}>
+                        <input 
+                          type="range" 
+                          min="0" 
+                          max="1" 
+                          step="0.01" 
+                          value={volume} 
+                          onChange={handleVolumeChange}
+                          className={st.volSlider}
+                          aria-label="Volume"
+                        />
+                      </div>
+                    </div>
+
+                    <span className={st.timeDisplay}>
+                      {formattedCurrentTime} / {formattedDuration}
+                    </span>
+
+                    {playbackRate !== 1 && (
+                      <span className={st.playbackIndicator}>{playbackRate}x</span>
                     )}
-                  </button>
-                  <div className={st.volSliderWrapper}>
-                    <input 
-                      type="range" 
-                      min="0" 
-                      max="1" 
-                      step="0.01" 
-                      value={volume} 
-                      onChange={handleVolumeChange}
-                      className={st.volSlider}
-                      aria-label="Volume"
-                    />
-                  </div>
-                </div>
+                  </>
+              </div>
 
-                <span className={st.timeDisplay}>
-                  {formattedCurrentTime} / {formattedDuration}
-                </span>
+              <div className={st.rightControls}>
+                <button 
+                  ref={settingsButtonRef}
+                  onClick={handleSettingsClick}
+                  className={clsx(st.controlBtn, showSettings && st.active)}
+                  aria-label="Settings"
+                >
+                  <Settings size={20} />
+                </button>
 
-                {playbackRate !== 1 && (
-                  <span className={st.playbackIndicator}>{playbackRate}x</span>
-                )}
-              </>
+                <button 
+                  onClick={handlePictureInPicture}
+                  className={st.controlBtn}
+                  aria-label="Picture in Picture"
+                >
+                  <PictureInPicture size={20} />
+                </button>
+
+                <button 
+                  onClick={toggleFullscreen}
+                  className={st.controlBtn}
+                  aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+                >
+                  {isFullscreen ? (
+                    <Minimize size={20} />
+                  ) : (
+                    <Maximize size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <SettingsTooltip
+              isOpen={showSettings}
+              onClose={() => setShowSettings(false)}
+              playbackRate={playbackRate}
+              onPlaybackRateChange={handlePlaybackRateChange}
+              aspectRatio={aspectRatio}
+              onAspectRatioChange={handleAspectRatioChange}
+              position={settingsPosition}
+              servers={servers}
+              selectedServerIndex={selectedServerIndex}
+              onServerChange={onServerChange}
+              isAmbientMode={isAmbientMode}
+              onToggleAmbientMode={toggleAmbientMode}
+            />
           </div>
-
-          <div className={st.rightControls}>
-            <button 
-              ref={settingsButtonRef}
-              onClick={handleSettingsClick}
-              className={clsx(st.controlBtn, showSettings && st.active)}
-              aria-label="Settings"
-            >
-              <Settings size={20} />
-            </button>
-
-            <button 
-              onClick={handlePictureInPicture}
-              className={st.controlBtn}
-              aria-label="Picture in Picture"
-            >
-              <PictureInPicture size={20} />
-            </button>
-
-            <button 
-              className={st.controlBtn}
-              aria-label="Cast"
-            >
-              <Cast size={20} />
-            </button>
-
-            <button 
-              onClick={toggleFullscreen}
-              className={st.controlBtn}
-              aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-            >
-              {isFullscreen ? (
-                <Minimize size={20} />
-              ) : (
-                <Maximize size={20} />
-              )}
-            </button>
-          </div>
-        </div>
-
-        <SettingsTooltip
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-          playbackRate={playbackRate}
-          onPlaybackRateChange={handlePlaybackRateChange}
-          aspectRatio={aspectRatio}
-          onAspectRatioChange={handleAspectRatioChange}
-          position={settingsPosition}
-          servers={servers}
-          selectedServerIndex={selectedServerIndex}
-          onServerChange={onServerChange}
-        />
+        )}
       </div>
-      )}
     </div>
   );
 }

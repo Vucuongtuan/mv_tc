@@ -25,7 +25,6 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
   const x = useMotionValue(0);
   const controls = useAnimation();
 
-  // Tính toán constraints dựa trên container và track width
   useEffect(() => {
     const updateConstraints = () => {
       if (containerRef.current && trackRef.current) {

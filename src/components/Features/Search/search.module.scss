@@ -1,0 +1,140 @@
+// Search Wrapper
+.searchWrapper {
+  @apply relative flex-1 max-w-[400px] z-50;
+
+  @media (max-width: 1024px) {
+    @apply flex-[0_1_auto] min-w-0;
+  }
+}
+
+.searchIcon {
+  @apply absolute left-3.5 top-1/2 -translate-y-1/2;
+  @apply text-white/50 pointer-events-none z-10;
+}
+
+.searchInput {
+  @apply w-full h-10 pl-11 pr-4;
+  @apply bg-white/10 border border-white/15 rounded-full;
+  @apply text-sm text-white outline-none;
+  @apply transition-all duration-300 ease-out;
+
+  @media (max-width: 640px) {
+    @apply w-10 p-0 pl-10 overflow-hidden;
+    @apply bg-white/5 border-none;
+    
+    &:focus, &:not(:placeholder-shown) {
+      @apply w-[240px] pr-4;
+    }
+  }
+
+  &::placeholder {
+    @apply text-white/50;
+  }
+
+  &:hover {
+    @apply bg-white/15 border-white/20;
+  }
+
+  &:focus {
+    @apply bg-white/15 border-primary/50;
+    @apply ring-4 ring-primary/10;
+  }
+}
+
+// Result Dropdown
+.resultWrapper {
+  @apply absolute top-[calc(100%+8px)] left-0 w-full;
+  @apply bg-[#121212]/90 backdrop-blur-2xl border border-white/10;
+  @apply rounded-xl overflow-hidden shadow-2xl shadow-black/50;
+  @apply opacity-0 invisible translate-y-2 scale-95 origin-top;
+  @apply transition-all duration-300 ease-out;
+
+  &.isVisible {
+    @apply opacity-100 visible translate-y-0 scale-100;
+  }
+
+  @media (max-width: 640px) {
+    @apply fixed left-4 right-4 top-[70px] w-auto;
+  }
+}
+
+.resultList {
+  @apply max-h-[calc(100vh-150px)] sm:max-h-[400px] overflow-y-auto;
+  @apply divide-y divide-white/5;
+
+  &::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20;
+  }
+}
+
+.resultItem {
+  @apply flex items-center gap-3 p-3;
+  @apply transition-colors duration-200;
+  @apply hover:bg-white/5 border-l-2 border-transparent;
+
+  &:hover {
+    @apply border-primary;
+  }
+}
+
+.itemThumb {
+  @apply relative w-[48px] aspect-[3/4] flex-shrink-0;
+  @apply rounded-md overflow-hidden bg-white/5 shadow-sm;
+}
+
+.thumbImage {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+/* Hover effect for image */
+.resultItem:hover .thumbImage {
+  @apply scale-110;
+}
+
+.itemInfo {
+  @apply flex-1 min-w-0;
+}
+
+.itemName {
+  @apply text-sm font-medium text-white truncate;
+  @apply mb-1;
+  
+  .resultItem:hover & {
+    @apply text-primary;
+  }
+}
+
+.itemSub {
+  @apply text-xs text-white/40 truncate flex items-center gap-2;
+}
+
+.loading {
+  @apply flex flex-col items-center justify-center gap-3 p-8;
+  @apply text-sm text-white/50;
+}
+
+.loadingIcon {
+  @apply w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full;
+  @apply animate-spin;
+}
+
+.noResult {
+  @apply flex flex-col items-center justify-center gap-2 p-8;
+  @apply text-sm text-white/40 italic;
+}
+
+.viewAll {
+  @apply block w-full p-3;
+  @apply text-center text-xs font-bold text-primary;
+  @apply bg-white/[0.02] hover:bg-white/5;
+  @apply transition-colors border-t border-white/5;
+  @apply uppercase tracking-wider;
+}

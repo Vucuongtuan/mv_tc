@@ -20,7 +20,7 @@ export default function BottomNav() {
   const { isLoggedIn, login } = useAuth();
 
   return (
-    <nav className={styles.bottomNav}>
+    <nav className={clsx(styles.bottomNav, 'liquid-glass-dark')}>
       <div className={styles.container}>
         {navItems.map((item) => {
           const Icon = item.icon;

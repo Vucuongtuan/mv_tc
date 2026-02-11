@@ -4,7 +4,7 @@ import {  getMoviesBySLug } from '@/services/movie';
 import styles from './country-stories.module.scss';
 import { ChevronRight } from 'lucide-react';
 import MovieSectionCarousel from './MovieSectionCarousel';
-import MovieCarouselSkeleton from '@/components/Features/MovieCarousel/Skeleton';
+import MovieCarouselLoading from '@/components/Features/MovieCarousel/Loading';
 
 interface MovieSectionProps {
     slug: string;
@@ -31,7 +31,7 @@ const MovieSection: React.FC<MovieSectionProps> = async ({ slug, title, limit = 
                     Xem tất cả <ChevronRight size={16} />
                 </Link>
             </header>
-            <Suspense fallback={<MovieCarouselSkeleton />}>
+            <Suspense fallback={<MovieCarouselLoading />}>
                 <MovieSectionCarousel movies={movies} cdnImage={cdnImage} />
             </Suspense>
         </section>

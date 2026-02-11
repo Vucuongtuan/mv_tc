@@ -179,6 +179,7 @@ export interface MovieListResponse<T> {
   status: string;
   message: string;
   data: T;
+  movie: T;
 }
 export interface DetailsResponse extends MovieListData {
 item:Movie

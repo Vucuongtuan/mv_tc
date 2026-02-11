@@ -1,4 +1,4 @@
-import { getDetailsMovie } from "@/services/movie";
+import { getDetailsMovie, getDetailsMovie2 } from "@/services/movie";
 import WatchClient from "./WatchClient";
 import { notFound } from "next/navigation";
 import { deepMergeImage, getImageUrl, mapperData } from "@/utils/mapperData";
@@ -9,12 +9,17 @@ import { Suspense } from "react";
 
 
 export default async function Watch({slug, chapter}: {slug: string, chapter: string}) {
-        const [data,err] = await getDetailsMovie(slug);
-        if (!data || err || !data?.item) {
+        const [query1,query2] = await Promise.all([
+            getDetailsMovie(slug),
+            getDetailsMovie2(slug)
+        ])
+        const [data1,err1] = query1
+        const [data2,err2] = query2
+        if ((!data1 && !data2) || (err1 && err2)) {
             notFound();
         }
-        const transformData = mapperData(data.item, data.APP_DOMAIN_CDN_IMAGE);
-        const deepImageData = await deepMergeImage(transformData, data.item.slug);
+        const transformData = mapperData(data1.item, data1.APP_DOMAIN_CDN_IMAGE);
+        const deepImageData = await deepMergeImage(transformData, data1.item.slug);
           
         const movie = deepImageData;
         let currentEpisode = null;
@@ -25,6 +30,15 @@ export default async function Watch({slug, chapter}: {slug: string, chapter: str
             if (found) {
                 currentEpisode = found;
                 break;
+            }
+        }
+        if(data2 && data2.length > 0){
+            for(const server of data2){
+                const found = server.server_data.find((ep:any) => ep.slug === chapter);
+                if (found) {
+                    currentEpisode = found;
+                    break;
+                }
             }
         }
     

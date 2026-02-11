@@ -41,7 +41,7 @@ export interface Details {
 export const syncDataTMDB = async (type: string, id: string): Promise<Details | null> => {
     return await tryC(async () => {
         try {
-            const url = `${process.env.SERVER2}/tmdb/${type}/${id}`;
+            const url = `${process.env.SERVER2}tmdb/${type}/${id}`;
             const res = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -217,8 +217,32 @@ export const getDetailsMovie = async (slug: string):Promise<[DetailsResponse | n
             console.error(`Failed to fetch movie details. URL: ${url}, Status: ${res.status} ${res.statusText}, Response: ${errorText}`);
             throw new Error(`Failed to fetch movie details: ${res.status} ${res.statusText}`);
         }
-        const response: MovieListResponse<DetailsResponse> = await res.json();
-        const { data } = response;
-        return data;
-    })
-}
+                        const response: MovieListResponse<DetailsResponse> = await res.json();
+                        const { data } = response;
+                        return data;
+                    })
+                }
+
+export const getDetailsMovie2 = async (slug: string):Promise<[any | null, Error | null]> => {
+    'use cache'
+    cacheLife('minutes')
+    cacheTag(`details-2:${slug}`)
+    return await tryCache(async () => {
+         const cleanSlug = slug.replace(/^(\/)?phim\//, '');
+        const url = `${process.env.SERVER2}/phim/${cleanSlug}`;
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',  
+            },
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error(`Failed to fetch movie details. URL: ${url}, Status: ${res.status} ${res.statusText}, Response: ${errorText}`);
+            throw new Error(`Failed to fetch movie details: ${res.status} ${res.statusText}`);
+        }
+                        const response: MovieListResponse<any> = await res.json();
+                        const { movie } = response;
+                        return movie;
+                    })
+                }

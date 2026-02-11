@@ -5,11 +5,11 @@ import Logo from './Logo';
 import Navigation from './Navigation';
 
 // Client Components
-import SearchBar from './SearchBar';
 import AuthButton, { AuthButtonClient } from './AuthButton';
 
 import HeaderBackground from './HeaderBackground';
 import { Suspense } from 'react';
+import SearchBar from '@/components/Features/Search';
 
 export default function Header() {
   return (

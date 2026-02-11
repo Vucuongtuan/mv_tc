@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Hero from "./Hero";
 import MovieSection from "./Movie";
 import UpcomingMovies from "./UpcomingMovies";
-import MovieCarouselSkeleton from "../Features/MovieCarousel/Skeleton";
+import MovieCarouselLoading from "../Features/MovieCarousel/Loading";
 import SectionInView from "./SectionInView";
 
 
@@ -68,7 +68,7 @@ export default function Sections() {
         <>
         {listSection.map((section,index)=>{
             const isInitial = index < 3;
-            const fallback = <MovieCarouselSkeleton />;
+            const fallback = <MovieCarouselLoading />;
             
             const content = section.section === 'Hero' ? (
                 <Hero />

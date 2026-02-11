@@ -65,12 +65,66 @@ export const initDataList = async (
                     prioritizeNonCartoon: slug === 'hoat-hinh' ? false : true
                 });
     
-    return {
-      status: response.status,
-      message: response.message,
-      items: finalItems,
-      pagination: data?.params?.pagination,
-      APP_DOMAIN_CDN_IMAGE: data?.APP_DOMAIN_CDN_IMAGE,
-    };
-  })
-}
+        return {
+          status: response.status,
+          message: response.message,
+          items: finalItems,
+          pagination: data?.params?.pagination,
+          APP_DOMAIN_CDN_IMAGE: data?.APP_DOMAIN_CDN_IMAGE,
+        };
+      })
+    }
+    
+    /**
+    
+     * Server Action tìm kiếm phim
+    
+     */
+    
+    export const searchMovies = async (keyword: string, limit: number = 10): Promise<HomeMoviesResponse | null> => {
+    
+        return await tryC(async () => {
+    
+            const url = `${process.env.BASE_URL_API}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}&limit=${limit + 5}`;
+    
+            const res = await fetch(url, {
+    
+                method: 'GET',
+    
+                headers: {
+    
+                    'Content-Type': 'application/json',
+    
+                },
+    
+            });
+            if (!res.ok) return null;
+            const response: MovieListResponse<MovieListData> = await res.json();
+    
+            const { data } = response;
+    
+            const filterItems = await filterMovies(data.items, {
+              limit: limit,
+              exclude18Plus: true,
+              prioritizeNonCartoon: false
+            })
+
+            return {
+    
+                status: response.status,
+    
+                message: response.message,
+    
+                items: filterItems,
+    
+                pagination: data?.params?.pagination,
+    
+                APP_DOMAIN_CDN_IMAGE: data?.APP_DOMAIN_CDN_IMAGE,
+    
+            };
+    
+        })
+    
+    }
+    
+    

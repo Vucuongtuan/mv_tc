@@ -15,8 +15,6 @@ const MovieSectionCarousel: React.FC<MovieSectionCarouselProps> = ({ movies, cdn
   const isMobile = useMediaQuery("only screen and (max-width: 639px)");
   const isTablet = useMediaQuery("only screen and (min-width: 640px) and (max-width: 1023px)");
 
-
-
   return (
     <div>
       <MovieCarousel itemWidth={isMobile ? 160 : isTablet ? 240 : 320} gap={16}>
