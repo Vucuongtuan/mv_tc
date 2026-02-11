@@ -1,0 +1,107 @@
+.cardWrapper {
+  @apply relative w-full;
+  z-index: 1;
+  
+  &:hover {
+    @apply z-20;
+    isolation: isolate; 
+  }
+}
+
+.thumbnailSimple {
+  @apply w-full relative aspect-[2/3] overflow-hidden rounded-lg;
+}
+
+.thumbnail {
+  @apply w-full h-full object-cover transition-transform duration-300;
+  
+  .cardWrapper:hover & {
+    @apply scale-105;
+  }
+}
+
+.infoSimple {
+  @apply w-full py-2 transition-opacity duration-200;
+}
+
+.badges {
+  @apply absolute top-2 left-2 flex flex-col gap-1 z-20;
+}
+
+.episodeBadge,
+.qualityBadge {
+  @apply px-2 py-0.5 rounded-full bg-red-500/20 text-[11px] font-semibold uppercase text-white backdrop-blur-xl w-fit border border-gray-300;
+}
+
+
+
+.originalName {
+  @apply text-base prose-base text-white line-clamp-2 overflow-hidden;
+}
+
+.hoverOverlay {
+  @apply absolute z-30 bg-[#181818] rounded-md overflow-hidden flex flex-col;
+  top: -10%;
+  left: -15%;
+  width: 130%;
+  transform-origin: center center;
+  box-shadow: 
+    0 0 0 1px rgba(255,255,255,0.1),
+    0 14px 36px rgba(0,0,0,0.75),
+    0 6px 14px rgba(0,0,0,0.5);
+}
+
+.hoverOverlayLeft {
+  left: 0;
+  transform-origin: left center;
+}
+
+.hoverOverlayRight {
+  left: auto;
+  right: 0;
+  transform-origin: right center;
+}
+
+.hoverMedia {
+  @apply relative w-full aspect-video bg-black overflow-hidden;
+}
+
+.hoverGradient {
+  @apply absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent;
+}
+
+.hoverMediaTitle {
+  @apply absolute bottom-3 left-3 right-3 text-base font-bold text-white drop-shadow-lg leading-tight line-clamp-1;
+}
+
+.hoverContent {
+  @apply p-3 flex flex-col gap-2;
+}
+
+.hoverActions {
+  @apply flex items-center gap-2 mb-1;
+}
+
+.btnPlay {
+  @apply flex-1 bg-white hover:bg-gray-200 text-black text-xs font-bold py-1.5 rounded flex items-center justify-center gap-1.5 transition-colors;
+}
+
+.btnIcon {
+  @apply w-8 h-8 rounded-full border border-gray-500 hover:border-white flex items-center justify-center bg-[#2a2a2a]/50 text-white transition-colors;
+}
+
+.hoverMeta {
+  @apply flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] font-medium text-gray-300;
+}
+
+.matchScore {
+  @apply text-green-400 font-bold;
+}
+
+.badge {
+  @apply border border-gray-500/80 px-1 py-0.5 rounded text-[10px];
+}
+
+.hoverGenres {
+  @apply flex flex-wrap items-center gap-1 text-[11px] text-white/80;
+}

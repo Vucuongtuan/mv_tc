@@ -1,0 +1,145 @@
+.container {
+    @apply w-full max-w-screen-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-20 -mt-24 sm:-mt-32 md:-mt-48 lg:-mt-64 pb-20;
+}
+
+// --- Header Section ---
+.headerSection {
+    @apply flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-12 items-center md:items-end mb-10 sm:mb-16;
+}
+
+.posterWrapper {
+    @apply w-[180px] sm:w-[220px] md:w-[280px] lg:w-[320px] flex-shrink-0 m-0;
+    
+    .poster {
+        @apply relative aspect-[2/3] w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl;
+        @apply ring-2 sm:ring-4 ring-background;
+        
+        img{
+            @apply w-full h-full object-cover;
+        }
+        .badge {
+            @apply absolute top-2 left-2 sm:top-4 sm:left-4 px-2 py-0.5 sm:px-3 sm:py-1 bg-primary text-[8px] sm:text-[10px] font-black rounded-md shadow-lg z-10;
+        }
+    }
+}
+
+.mainInfo {
+    @apply flex-1 flex flex-col gap-4 sm:gap-6 text-white pb-2 md:pb-4 text-center md:text-left items-center md:items-start;
+
+    .titleArea {
+        h1 {
+            @apply text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-tight;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .subTitle {
+            @apply text-xs sm:text-sm md:text-base text-white/60 font-medium uppercase tracking-widest mb-1 sm:mb-2 block;
+        }
+    }
+}
+
+.metaList {
+    @apply flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-4 text-xs sm:text-sm font-medium list-none p-0 m-0;
+    
+    .rating {
+        @apply flex items-center gap-1.5 text-yellow-400 bg-yellow-400/10 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border border-yellow-400/20;
+    }
+    
+    .metaItem {
+        @apply flex items-center gap-1.5 text-white/70 bg-white/5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10;
+    }
+}
+
+.genres {
+    @apply flex flex-wrap items-center justify-center md:justify-start gap-2 list-none p-0 m-0;
+    .genreTag {
+        @apply block px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold bg-accent/40 rounded-lg border border-white/5 transition-all;
+        @apply hover:bg-primary hover:text-white hover:border-primary/50;
+    }
+}
+
+.actionGroup {
+    @apply flex flex-wrap items-center justify-center md:justify-start gap-3 mt-2 w-full sm:w-auto;
+    
+    .btnPrimary {
+        @apply flex-1 sm:flex-none flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all;
+        @apply hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20 cursor-pointer;
+        
+        &.btnTrailerMode {
+            @apply bg-white text-black hover:bg-white/90 shadow-white/20;
+        }
+    }
+   
+}
+
+// --- Content Grid ---
+.contentGrid {
+    @apply grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_350px] gap-8 md:gap-12;
+}
+
+.leftContent {
+    @apply space-y-10 sm:space-y-16;
+
+    .section {
+        @apply py-2;
+        h3 {
+            @apply text-lg sm:text-2xl font-black uppercase tracking-[0.2em] mb-6 flex items-center gap-3 sm:gap-4;
+            &::before {
+                @apply w-1 sm:w-1.5 h-6 sm:h-8 bg-primary rounded-full content-[''];
+            }
+        }
+        
+        .description {
+            @apply tracking-wide text-sm sm:text-base md:text-lg;
+            
+            & > p:first-of-type::first-letter {
+                @apply text-4xl sm:text-5xl md:text-6xl font-black mr-2 sm:mr-3 float-left leading-[1];
+                @apply text-primary;
+                text-shadow: 0 0 20px rgba(var(--primary), 0.3);
+            }
+        }
+    }
+}
+
+
+.videoContainer {
+    @apply relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-black shadow-2xl;
+    
+    :global(lite-youtube), 
+    iframe { 
+        @apply absolute inset-0 w-full h-full object-cover;
+        max-width: 100% !important;
+    }
+}
+
+.fullWidthSection {
+    @apply mt-10 sm:mt-16 w-full;
+    h3 {
+        @apply mb-6 sm:mb-8;
+    }
+}
+
+.rightSidebar {
+    @apply space-y-6 sm:space-y-8;
+
+    .infoBox {
+        @apply p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/5 bg-card/50 backdrop-blur-sm;
+        
+        h3 { @apply text-base sm:text-lg font-black uppercase tracking-[0.2em] text-primary mb-4 sm:mb-6; }
+    }
+
+    .detailList {
+        @apply space-y-3 sm:space-y-4 m-0 p-0;
+        .detailItem {
+            @apply flex flex-col gap-0.5 sm:gap-1 pb-3 sm:pb-4 border-b border-white/5 last:border-0 last:pb-0;
+            .label { @apply text-xs sm:text-base uppercase tracking-widest text-white/30 m-0; }
+            .value { @apply text-xs sm:text-base font-medium text-white/90 m-0; }
+        }
+    }
+
+    .actorList {
+        @apply flex flex-wrap gap-2 list-none p-0 m-0;
+        .actorName {
+            @apply text-[10px] sm:text-xs md:text-base font-bold px-2 py-1 bg-white/5 border border-white/5 rounded;
+        }
+    }
+}

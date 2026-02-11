@@ -1,0 +1,249 @@
+
+.section {
+  @apply relative w-full overflow-hidden max-w-screen-4xl px-4 md:px-12 py-8 md:py-12 mx-auto;
+  
+  // Background effect
+  &::before {
+    content: '';
+    @apply absolute inset-0 -z-10;
+    background: radial-gradient(
+      circle at center,
+      rgba(99, 102, 241, 0.08) 0%,
+      transparent 70%
+    );
+  }
+}
+
+.header {
+  @apply flex items-center justify-between mb-8 md:mb-10 w-full z-20 relative;
+}
+
+.title {
+  @apply text-2xl md:text-3xl font-bold text-white relative pl-5;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  
+  &::before {
+    content: '';
+    @apply absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1.5 rounded-full;
+    background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.5);
+  }
+}
+
+
+.carouselContainer {
+  @apply relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[21/8] max-h-[650px] rounded-3xl overflow-hidden;
+  @apply shadow-2xl;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  background: #000; // Fallback
+}
+
+// Slide Wrapper - Absolute positioning for stacking
+.slideWrapper {
+  @apply absolute inset-0 w-full h-full;
+  // Will be handled by Framer Motion
+}
+
+// ==========================================
+// Banner Item Styles
+// ==========================================
+
+.bannerItem {
+  @apply relative w-full h-full overflow-hidden;
+  @apply flex items-end md:items-center; // Bottom align mobile, Center align desktop
+}
+
+.bannerBackground {
+  @apply absolute inset-0 -z-10 w-full h-full;
+  
+  img {
+    @apply w-full h-full object-cover;
+    // Animation handled by Motion variants
+  }
+  
+  &::after {
+    content: '';
+    @apply absolute inset-0;
+    // Enhanced gradient for text readability
+    background: linear-gradient(
+      90deg,
+      rgba(0,0,0,0.95) 0%,
+      rgba(0,0,0,0.85) 30%,
+      rgba(0,0,0,0.4) 60%,
+      transparent 100%
+    );
+    
+    @media (max-width: 768px) {
+      background: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.8) 50%,
+        rgba(0,0,0,0.3) 80%,
+        transparent 100%
+      );
+    }
+  }
+}
+
+// ==========================================
+// Content Box
+// ==========================================
+
+.contentWrapper {
+  @apply container mx-auto px-6 md:px-16 relative z-10 w-full pb-12 md:pb-0;
+}
+
+.glassCard {
+  @apply relative max-w-4xl w-full;
+  // Removed border/bg for cleaner look, text stands out on gradient
+}
+
+.badge {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4;
+  background: hsl(var(--primary) / 0.15);
+  color: hsl(var(--primary));
+  border: 1px solid hsl(var(--primary) / 0.3);
+  backdrop-filter: blur(4px);
+  
+  &::before {
+    content: '';
+    @apply w-1.5 h-1.5 rounded-full animate-pulse;
+    background-color: hsl(var(--primary));
+  }
+}
+
+.movieTitle {
+  @apply text-3xl md:text-5xl lg:text-6xl font-black text-white mb-2 leading-tight tracking-tight;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  
+  // Subtle gradient text
+  background: linear-gradient(to bottom right, #ffffff 30%, #cccccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.movieSubtitle {
+  @apply text-lg md:text-2xl text-gray-300 font-medium mb-6 line-clamp-1 opacity-90;
+}
+
+.metaInfo {
+  @apply flex flex-wrap items-center gap-4 md:gap-6 text-sm md:text-base text-gray-300 mb-8;
+  
+  .metaItem {
+    @apply flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10;
+  }
+  
+  svg {
+    @apply w-4 h-4;
+    color: hsl(var(--primary));
+  }
+}
+
+// ==========================================
+// Actions & Countdown
+// ==========================================
+
+.actions {
+  @apply flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-8;
+}
+
+.playBtn {
+  @apply relative overflow-hidden flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold transition-all duration-300;
+  @apply bg-primary text-primary-foreground w-full md:w-auto min-w-[200px];
+  box-shadow: 0 0 25px hsl(var(--primary) / 0.4);
+  
+  &:hover {
+    @apply transform scale-105;
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
+  }
+  
+  // Shine effect
+  &::after {
+    content: '';
+    @apply absolute inset-0 bg-white/30 translate-x-[-100%] skew-x-[-15deg] transition-transform duration-500;
+  }
+  
+  &:hover::after {
+    @apply translate-x-[100%];
+  }
+}
+
+// Modern Countdown
+.countdownContainer {
+  @apply flex items-center gap-4;
+}
+
+.countdownLabel {
+  @apply text-xs uppercase tracking-widest font-bold mb-2 opacity-80;
+  color: hsl(var(--primary));
+}
+
+.countdownGrid {
+  @apply flex gap-3;
+}
+
+.countdownBox {
+  @apply flex flex-col items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-xl;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  
+  .value {
+    @apply text-xl md:text-2xl font-bold text-white leading-none;
+  }
+  
+  .label {
+    @apply text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 mt-1;
+  }
+}
+
+// ==========================================
+// Navigation & Pagination
+// ==========================================
+
+.navButtons {
+  @apply absolute bottom-8 right-8 z-30 flex gap-3;
+  
+  @media (max-width: 768px) {
+    @apply bottom-4 right-4 scale-75;
+  }
+}
+
+.navBtn {
+  @apply w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  
+  &:hover {
+    background: white;
+    color: black;
+    transform: scale(1.1);
+  }
+  
+  svg {
+    @apply w-6 h-6;
+  }
+}
+
+.pagination {
+  @apply absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2;
+  
+  @media (max-width: 768px) {
+    @apply bottom-4;
+  }
+}
+
+.dot {
+  @apply w-2 h-2 rounded-full bg-white/30 transition-all duration-300 cursor-pointer;
+  
+  &.active {
+    @apply w-8 bg-primary;
+  }
+  
+  &:hover:not(.active) {
+    @apply bg-white/60;
+  }
+}

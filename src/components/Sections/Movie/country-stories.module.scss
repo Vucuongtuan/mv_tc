@@ -1,0 +1,49 @@
+.container {
+  @apply mx-auto max-w-screen-4xl;
+  padding: 2rem 4rem;
+  overflow-x: clip; 
+  overflow-y: visible;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  border-left: 4px solid #f5c518;
+  padding-left: 0.75rem;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+    padding-left: 0.5rem;
+    border-left-width: 3px;
+  }
+}
+
+.viewAll {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: #a1a1a1;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #f5c518;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+}

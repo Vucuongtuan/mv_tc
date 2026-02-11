@@ -1,0 +1,104 @@
+.watchContainer {
+    @apply min-h-screen max-w-screen-3xl mx-auto font-sans z-20 pb-20 pt-20;
+}
+
+.header {
+    @apply flex items-center gap-4 px-6 py-4  backdrop-blur-2xl ;
+    
+    .backBtn {
+        @apply p-2 rounded-full hover:bg-white/10 transition-colors;
+    }
+
+    h1 {
+        @apply text-lg font-medium text-white/90;
+    }
+}
+
+// --- Video Player ---
+.playerSection {
+    @apply w-full  mx-auto p-0 md:p-6;
+}
+
+.videoWrapper {
+    @apply relative w-full aspect-video bg-[#151515] rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/5;
+
+    .loadingState {
+        @apply absolute inset-0 flex flex-col items-center justify-center bg-[#151515] z-20;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        
+        .logoLoader {
+            @apply w-24 h-24 mb-6 relative;
+            &::before { @apply absolute inset-0 border-4 border-amber-500/30 rounded-full animate-ping content-['']; }
+            &::after { @apply absolute inset-2 border-4 border-t-amber-500 border-r-transparent border-b-amber-500 border-l-transparent rounded-full animate-spin content-['']; }
+        }
+        .loadingText { @apply text-white/80 font-medium mb-2; }
+        .subText { @apply text-white/40 text-sm; }
+    }
+}
+
+.controlsOverlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/40 opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6 z-30;
+    &.visible { @apply opacity-100; }
+}
+
+.progressBar {
+    @apply w-full h-1.5 bg-white/20 rounded-full mb-4 cursor-pointer relative;
+    .progressFill {
+        @apply absolute top-0 left-0 h-full bg-[#e50914] rounded-full relative;
+        &::after { @apply absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#e50914] rounded-full scale-0 transition-transform shadow-lg content-['']; }
+    }
+    .bufferFill { @apply absolute top-0 left-0 h-full bg-white/10 rounded-full; }
+}
+
+.controlBar {
+    @apply flex items-center justify-between;
+    .leftControls, .rightControls { @apply flex items-center gap-4; }
+    button {
+        @apply text-white/80 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full;
+        &.playBtn { @apply text-white hover:scale-110 active:scale-95 transition-transform; }
+    }
+    .volumeControl { @apply flex items-center gap-2; .volSlider { @apply w-0 overflow-hidden transition-all duration-300; input { @apply w-24 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer; } } }
+    .timeDisplay { @apply text-sm font-medium text-white/90 ml-2; }
+}
+
+// --- Watch Actions ---
+.actionRow {
+    @apply flex flex-wrap items-center justify-between gap-4 mt-6 px-2;
+    .btnAction {
+        @apply flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#262626] text-white/90 hover:bg-[#333] hover:text-white transition-all text-sm font-medium border border-white/5;
+        &.active { @apply text-[#e50914] bg-[#e50914]/10 border-[#e50914]/20; }
+        svg { @apply w-4 h-4; }
+    }
+}
+
+// --- Info Grid ---
+.infoGrid {
+    @apply grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 mt-10 px-2;
+}
+
+.movieInfo {
+    @apply space-y-6 text-white;
+    .headerGroup {
+        @apply flex gap-6 items-start;
+        .poster { @apply relative w-[160px] aspect-[2/3] rounded-lg overflow-hidden shadow-lg flex-shrink-0 border border-white/10; }
+        .meta {
+            @apply flex-1 space-y-3;
+            h2 { @apply text-3xl font-bold text-white leading-tight; }
+            .tags { @apply flex flex-wrap gap-2; span { @apply px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-white/80 border border-white/5; } }
+            .badges { @apply flex items-center gap-3 mt-2; .badge { @apply flex items-center gap-1.5 px-3 py-1 bg-[#e50914] text-white text-xs font-bold rounded; &.outline { @apply bg-transparent border border-white/20 text-white/60; } } }
+        }
+    }
+    .description { @apply text-gray-300 leading-relaxed font-light text-base md:text-lg; }
+}
+
+.sidebar { @apply space-y-8; }
+
+.castSection {
+    h3 { @apply text-sm font-bold uppercase tracking-widest text-white/50 mb-4; }
+    .castGrid { @apply grid grid-cols-4 gap-3; .actor { @apply flex flex-col items-center gap-2 text-center; .avatar { @apply relative w-14 h-14 rounded-full overflow-hidden border-2 border-white/10; } span { @apply text-[10px] text-gray-400 line-clamp-1; } } }
+}
+
+.episodeSection {
+    h3 { @apply text-sm font-bold uppercase tracking-widest text-white/50 mb-4; }
+    .epGrid { @apply grid grid-cols-2 gap-3; .epCard { @apply relative aspect-video rounded-lg overflow-hidden border border-white/10 cursor-pointer; &.active { @apply border-[#e50914] ring-2 ring-[#e50914]/20; } img { @apply w-full h-full object-cover transition-transform duration-500; } .overlay { @apply absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 transition-opacity; span { @apply text-xs font-bold px-3 py-1.5 bg-[#e50914] rounded-full; } } .epLabel { @apply absolute bottom-2 left-2 px-2 py-0.5 bg-black/80 rounded text-[10px] font-bold text-white; } } }
+}
