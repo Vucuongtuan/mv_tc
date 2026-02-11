@@ -28,6 +28,14 @@ const config = {
     },
     prefix: "",
     extend: {
+      aspectRatio: {
+        'wide': '2.1',
+        'cinematic': '2.39'
+      },
+      maxWidth: {
+        'screen-3xl': '1920px',
+        'screen-4xl': '2560px',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -104,7 +112,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography"), addVariablesForColors],
 } satisfies Config;
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));

@@ -2,12 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-
-  reactStrictMode: true,
+  cacheComponents:true,
+  reactCompiler: true,
   experimental: {
     viewTransition: true,
-    ppr: 'incremental',
-
   },
   images: {
     remotePatterns: [
