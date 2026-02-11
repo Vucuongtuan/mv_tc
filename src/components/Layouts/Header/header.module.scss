@@ -1,0 +1,274 @@
+.header {
+  @apply fixed inset-x-0 top-0 z-50 w-full h-16;
+
+  @media (max-width: 1024px) {
+    @apply absolute bg-transparent border-none;
+  }
+}
+
+.headerBackground {
+  @apply absolute inset-0 -z-10 transition-all duration-300 ease-in-out;
+  @apply bg-transparent;
+
+  &_scrolled {
+    @apply bg-black/80 backdrop-blur-xl;
+  }
+
+  @media (max-width: 1024px) {
+    @apply hidden;
+  }
+}
+
+.container {
+  @apply relative z-10;
+  @apply flex items-center gap-4;
+  @apply h-full mx-auto px-4;
+
+  @media (max-width: 1024px) {
+    @apply justify-between;
+  }
+}
+
+// Mobile Menu Button
+.mobileMenuBtn {
+  @apply hidden;
+}
+
+// Logo
+.logo {
+  @apply flex items-center gap-1.5;
+  @apply no-underline flex-shrink-0;
+}
+
+.logoIcon {
+  @apply flex items-center justify-center;
+  @apply w-8 h-8 rounded-lg;
+  @apply text-lg font-extrabold text-black;
+  background: linear-gradient(135deg, #f5c518 0%, #e6b800 100%);
+}
+
+.logoText {
+  @apply text-[22px] font-bold tracking-tight;
+  color: #f5c518;
+}
+
+// Search
+.searchWrapper {
+  @apply relative flex-1 max-w-[400px];
+
+  @media (max-width: 1024px) {
+    @apply flex-[0_1_auto] min-w-0;
+  }
+}
+
+.searchIcon {
+  @apply absolute left-3.5 top-1/2 -translate-y-1/2;
+  @apply text-white/50 pointer-events-none;
+}
+
+.searchInput {
+  @apply w-full h-10 pl-11 pr-4;
+  @apply bg-white/10 border border-white/15 rounded-full;
+  @apply text-sm text-white outline-none;
+  @apply transition-all duration-300 ease-out;
+
+  @media (max-width: 640px) {
+    @apply w-10 p-0 pl-10 overflow-hidden focus:w-[180px] focus:pr-4;
+    @apply bg-white/5 border-none;
+  }
+
+  &::placeholder {
+    @apply text-white/50;
+  }
+
+  &:hover {
+    @apply bg-white/15 border-white/20;
+  }
+
+  &:focus {
+    @apply bg-white/15 border-yellow-500;
+    @apply ring-4 ring-yellow-500/20;
+  }
+}
+
+// Navigation
+.nav {
+  @apply flex items-center gap-2 flex-1;
+
+  @media (max-width: 1024px) {
+    @apply hidden;
+  }
+}
+
+.navLink {
+  @apply relative flex items-center gap-1.5;
+  @apply px-3.5 py-2 rounded-lg;
+  @apply text-sm font-medium text-white/85 no-underline whitespace-nowrap;
+  @apply transition-all duration-200 ease-out;
+
+  &:hover {
+    @apply text-white bg-white/10;
+  }
+}
+
+.newBadge {
+  @apply inline-flex items-center justify-center;
+  @apply px-1.5 py-0.5 rounded;
+  @apply text-[10px] font-bold text-black uppercase tracking-wide;
+  background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+}
+
+// Right Section
+.rightSection {
+  @apply flex items-center gap-3 flex-shrink-0 ml-auto;
+
+  @media (max-width: 1024px) {
+    @apply hidden;
+  }
+}
+
+.iconButton {
+  @apply flex items-center justify-center;
+  @apply w-10 h-10 bg-transparent border-none rounded-full;
+  @apply text-white/85 cursor-pointer;
+  @apply transition-all duration-200 ease-out;
+
+  &:hover {
+    @apply text-white bg-white/10;
+  }
+}
+
+.memberButton {
+  @apply flex items-center gap-2;
+  @apply px-5 py-2.5 border border-white/10 rounded-full;
+  @apply text-sm font-semibold text-white cursor-pointer;
+  @apply transition-all duration-300 ease-in-out;
+  @apply bg-white/5 backdrop-blur-md;
+
+  &:hover {
+    @apply bg-white/15 border-white/20 -translate-y-0.5 shadow-lg shadow-black/20;
+  }
+
+  &:active {
+    @apply translate-y-0;
+  }
+
+  @media (max-width: 640px) {
+    @apply px-3.5;
+
+    span {
+      @apply hidden;
+    }
+  }
+}
+
+.memberButtonSkeleton {
+  @apply w-[120px] h-[40px] rounded-full;
+  @apply bg-white/5 animate-pulse;
+
+  @media (max-width: 640px) {
+    @apply w-[40px];
+  }
+}
+
+// =============================
+// Mobile Navigation
+// =============================
+
+.mobileOverlay {
+  @apply fixed inset-0 z-[200];
+  @apply bg-black/70 backdrop-blur-sm;
+  @apply opacity-0 invisible;
+  @apply transition-all duration-300 ease-out;
+
+  &.active {
+    @apply opacity-100 visible;
+  }
+}
+
+.mobileNav {
+  @apply fixed top-0 left-0 z-[300];
+  @apply w-[300px] max-w-[85vw] h-screen;
+  @apply flex flex-col overflow-y-auto;
+  @apply border-r border-white/10;
+  @apply -translate-x-full;
+  @apply transition-transform duration-300 ease-out;
+  background: linear-gradient(180deg, #0a0a0a 0%, #111827 100%);
+
+  &.active {
+    @apply translate-x-0;
+  }
+}
+
+.mobileNavHeader {
+  @apply flex items-center justify-between;
+  @apply px-5 py-4;
+  @apply border-b border-white/10;
+}
+
+.closeBtn {
+  @apply flex items-center justify-center;
+  @apply w-10 h-10 bg-white/5 border-none rounded-lg;
+  @apply text-white/80 cursor-pointer;
+  @apply transition-all duration-200 ease-out;
+
+  &:hover {
+    @apply bg-white/10 text-white;
+  }
+}
+
+.mobileSearch {
+  @apply relative px-5 py-4;
+  @apply border-b border-white/10;
+
+  .searchIcon {
+    @apply left-8;
+  }
+
+  .searchInput {
+    @apply w-full bg-white/5 rounded-xl;
+  }
+}
+
+.mobileMenuItems {
+  @apply flex-1 py-3;
+}
+
+.mobileNavLink {
+  @apply flex items-center justify-between;
+  @apply px-6 py-4;
+  @apply text-base font-medium text-white/90 no-underline;
+  @apply border-l-[3px] border-transparent;
+  @apply transition-all duration-200 ease-out;
+
+  &:hover {
+    @apply bg-white/5 text-white border-l-yellow-500;
+  }
+
+  .newBadge {
+    @apply text-[11px] px-2 py-1;
+  }
+}
+
+.mobileFooter {
+  @apply p-5;
+  @apply border-t border-white/10;
+}
+
+.mobileMemberButton {
+  @apply flex items-center justify-center gap-2.5;
+  @apply w-full px-5 py-3.5 border-none rounded-xl;
+  @apply text-base font-semibold text-white cursor-pointer;
+  @apply shadow-lg shadow-sky-500/30;
+  @apply transition-all duration-200 ease-out;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+
+  &:hover {
+    @apply -translate-y-0.5 shadow-xl shadow-sky-500/40;
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+  }
+
+  &:active {
+    @apply translate-y-0;
+  }
+}

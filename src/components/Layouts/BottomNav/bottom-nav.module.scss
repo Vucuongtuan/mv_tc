@@ -1,0 +1,40 @@
+.bottomNav {
+  @apply fixed bottom-2 rounded-full inset-x-0 z-50;
+  @apply h-16 bg-black/40 backdrop-blur-lg border-t border-white/10;
+  @apply transition-transform duration-300 ease-in-out w-[90%] mx-auto;
+
+  @media (min-width: 1025px) {
+    @apply hidden;
+  }
+}
+
+.container {
+  @apply flex p-1 items-center justify-around h-full max-w-md mx-auto;
+}
+
+.navItem {
+  @apply flex flex-col items-center justify-center gap-1;
+  @apply text-white/60 no-underline transition-colors;
+  @apply min-w-[64px] px-6 h-full relative z-10;
+
+  span {
+    @apply text-[10px] font-medium;
+  }
+
+  &.active {
+    @apply text-yellow-500 ;
+  }
+
+  &:hover {
+    @apply text-white;
+  }
+}
+
+.activeIndicator {
+  @apply absolute inset-y-0 -inset-x-3 -z-10 ;
+  @apply bg-white/10 rounded-full backdrop-blur-lg border border-white/5;
+}
+
+.authItem {
+  @apply bg-transparent border-none cursor-pointer p-0;
+}
