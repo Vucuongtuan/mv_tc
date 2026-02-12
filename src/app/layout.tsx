@@ -8,6 +8,7 @@ import Footer from "@/components/Layouts/Footer";
 import BottomNav from "@/components/Layouts/BottomNav";
 import SecurityGuard from "@/components/Commons/SecurityGuard";
 import { ReactQueryClientProvider } from "./provider-tanstack";
+import { WebSiteJsonLd } from "@/components/Commons/JsonLd";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <SecurityGuard />
+        <WebSiteJsonLd />
         <ViewTransition>
           <ReactQueryClientProvider>
 

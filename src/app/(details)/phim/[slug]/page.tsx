@@ -4,6 +4,7 @@ import { getDetailsMovie } from "@/services/movie";
 import { deepMergeImage, mapperData } from "@/utils/mapperData";
 import { getSlugGenerateStaticParams } from "@/services/movie";
 import { notFound } from "next/navigation";
+import { MovieJsonLd } from "@/components/Commons/JsonLd";
 
 
 export async function generateStaticParams(){
@@ -23,6 +24,7 @@ export default async function MovieDetailsPage({params}: {params: Promise<{slug:
   
     return (
         <main aria-label="Movie Details">
+            <MovieJsonLd movie={deepImageData} />
             <HeroDetails movie={data.item} deepImage={deepImageData} />
             <MovieInfo movie={data.item} transformData={deepImageData} />
         </main>

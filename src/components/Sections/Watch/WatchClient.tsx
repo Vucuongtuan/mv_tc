@@ -10,6 +10,7 @@ import { Suspense, useState, useMemo, ViewTransition, useCallback, useEffect } f
 import { getImageUrl } from '@/utils/mapperData';
 import Placeholder from './Plaholder';
 import VideoPlayer from '@/components/Features/VideoPlayer';
+import { BreadcrumbJsonLd } from '@/components/Commons/JsonLd';
 
 interface WatchClientProps {
   movie: HeroSlideData;
@@ -46,6 +47,13 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
  console.log({sources})
   return (
     <div className={st.watchContainer}>
+      <BreadcrumbJsonLd 
+        items={[
+          { name: 'Trang chủ', item: '/' },
+          { name: movie.title || '', item: `/phim/${movie.slug}` },
+          { name: `Xem phim ${movie.title} - Tập ${currentEpisode.name}`, item: `/phim/${movie.slug}/${currentEpisode.slug}` }
+        ]} 
+      />
       <WatchHeader 
         title={`Xem phim ${movie.title} - ${currentEpisode.name.includes('Tập') ? currentEpisode.name : 'Tập ' + currentEpisode.name}`} 
         backUrl={`/phim/${movie.slug}`} 
