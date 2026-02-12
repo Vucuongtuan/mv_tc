@@ -1,6 +1,6 @@
 'use client';
 
-import { Share2, AlertTriangle, List, Server, Cpu, ExternalLink } from 'lucide-react';
+import { Share2, AlertTriangle, List, Server, Cpu, ExternalLink, Sparkles } from 'lucide-react';
 import st from './watch-page.module.scss';
 import { clsx } from 'clsx';
 import { EpisodeServer } from '@/types/type';
@@ -11,6 +11,8 @@ interface WatchActionsProps {
   onServerChange: (index: number) => void;
   isEmbed: boolean;
   onToggleMode: () => void;
+  isAmbientMode: boolean;
+  onToggleAmbientMode: () => void;
 }
 
 export default function WatchActions({ 
@@ -18,12 +20,13 @@ export default function WatchActions({
   selectedServerIndex, 
   onServerChange,
   isEmbed,
-  onToggleMode
+  onToggleMode,
+  isAmbientMode,
+  onToggleAmbientMode
 }: WatchActionsProps) {
   return (
     <div className={st.actionRow}>
       <div className="flex flex-wrap gap-4">
-        {/* Switch Server Button */}
         <div className="flex items-center gap-2 bg-[#262626] rounded-lg p-1 border border-white/5">
           <div className="px-3 flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-wider border-r border-white/10">
             <Server size={14} /> Server
@@ -34,10 +37,10 @@ export default function WatchActions({
                 key={idx}
                 onClick={() => onServerChange(idx)}
                 className={clsx(
-                  "px-3 py-1.5 rounded-md text-xs font-bold transition-all",
+                  "px-3 py-1.5 rounded-md text-xs font-bold transition-all backdrop-blur-xl",
                   selectedServerIndex === idx 
                     ? "bg-[#e50914] text-white shadow-lg" 
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
+                    : "text-white  hover:bg-white/5 hover:text-white"
                 )}
               >
                 #{idx + 1}
@@ -61,7 +64,20 @@ export default function WatchActions({
           )}
         </button>
 
-        <button className={st.btnAction}><List /> Tập phim</button>
+        {!isEmbed && (
+          <button 
+            onClick={onToggleAmbientMode}
+            className={clsx(
+              st.btnAction,
+              isAmbientMode && "text-[#e50914] bg-[#e50914]/10 border-[#e50914]/20"
+            )}
+            title='Đây là tính năng beta tăng trải nghiệm xem phim có thể làm giật lag giảm trải nghiệm người dùng.'
+          >
+            <Sparkles size={16} />
+            {isAmbientMode ? 'Tắt Ambient' : 'Bật Ambient'}
+          </button>
+        )}
+
       </div>
 
       <div className="flex gap-4">

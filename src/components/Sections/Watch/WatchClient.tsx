@@ -3,33 +3,51 @@
 import { Movie, EpisodeServer, HeroSlideData, EpisodeData } from '@/types/type';
 import st from './watch-page.module.scss';
 import WatchHeader from './WatchHeader';
-import VideoPlayer from './VideoPlayer';
 import WatchActions from './WatchActions';
 import WatchInfo from './WatchInfo';
 import WatchSidebar from './WatchSidebar';
-import { Suspense, useState, useMemo, ViewTransition } from 'react';
+import { Suspense, useState, useMemo, ViewTransition, useCallback, useEffect } from 'react';
 import { getImageUrl } from '@/utils/mapperData';
 import Placeholder from './Plaholder';
+import VideoPlayer from '@/components/Features/VideoPlayer';
 
 interface WatchClientProps {
   movie: HeroSlideData;
   currentEpisode: EpisodeData;
   episodes: EpisodeServer[];
+  sources: any[]; 
 }
 
-export default function WatchClient({ movie, currentEpisode, episodes }: WatchClientProps) {
-  const [selectedServerIndex, setSelectedServerIndex] = useState(0);
+export default function WatchClient({ movie, currentEpisode, episodes, sources }: WatchClientProps) {
+  const [selectedSourceIndex, setSelectedSourceIndex] = useState(0);
   const [isEmbed, setIsEmbed] = useState(false);
-  
-  const episodeInSelectedServer = useMemo(() => {
-    const server = episodes[selectedServerIndex];
-    return server?.server_data.find(ep => ep.name === currentEpisode.name) || currentEpisode;
-  }, [selectedServerIndex, episodes, currentEpisode]);
+  const [isAmbientMode, setIsAmbientMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('ambient-mode') === 'true';
+    }
+    return false;
+  });
 
+  useEffect(() => {
+    setSelectedSourceIndex(0);
+  }, [currentEpisode.slug]);
+
+  const toggleAmbientMode = useCallback(() => {
+    setIsAmbientMode(prev => {
+      const next = !prev;
+      localStorage.setItem('ambient-mode', String(next));
+      return next;
+    });
+  }, []);
+  
+  const currentSource = useMemo(() => {
+    return sources[selectedSourceIndex] || sources[0];
+  }, [selectedSourceIndex, sources]);
+ console.log({sources})
   return (
     <div className={st.watchContainer}>
       <WatchHeader 
-        title={`Xem phim ${movie.title}`} 
+        title={`Xem phim ${movie.title} - ${currentEpisode.name.includes('Tập') ? currentEpisode.name : 'Tập ' + currentEpisode.name}`} 
         backUrl={`/phim/${movie.slug}`} 
       />
 
@@ -37,23 +55,27 @@ export default function WatchClient({ movie, currentEpisode, episodes }: WatchCl
         <ViewTransition name={`movie-${movie.slug}`}>
         <Suspense fallback={<Placeholder/>}>
           <VideoPlayer 
-            key={`${selectedServerIndex}-${episodeInSelectedServer.slug}-${isEmbed}`} 
-            src={isEmbed ? "" : episodeInSelectedServer.link_m3u8} 
-            embedUrl={episodeInSelectedServer.link_embed}
+            key={`${currentSource.server_name}-${currentEpisode.slug}-${isEmbed}`} 
+            src={isEmbed ? "" : currentSource.link_m3u8} 
+            embedUrl={currentSource.link_embed}
             poster={getImageUrl(movie.images?.primaryBackdrop,'w1280')} 
-            servers={episodes}
-            selectedServerIndex={selectedServerIndex}
-            onServerChange={setSelectedServerIndex}
+            servers={sources} // Truyền sources để hiển thị danh sách Server trong settings player nếu cần
+            selectedServerIndex={selectedSourceIndex}
+            onServerChange={setSelectedSourceIndex}
+            isAmbientMode={isAmbientMode}
+            onToggleAmbientMode={toggleAmbientMode}
             />
         </Suspense>
             </ViewTransition>
 
         <WatchActions 
-          servers={episodes} 
-          selectedServerIndex={selectedServerIndex}
-          onServerChange={setSelectedServerIndex}
+          servers={sources} 
+          selectedServerIndex={selectedSourceIndex}
+          onServerChange={setSelectedSourceIndex}
           isEmbed={isEmbed}
           onToggleMode={() => setIsEmbed(!isEmbed)}
+          isAmbientMode={isAmbientMode}
+          onToggleAmbientMode={toggleAmbientMode}
         />
 
         <div className={st.infoGrid}>

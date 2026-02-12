@@ -1,5 +1,4 @@
 import { getDetailsMovie } from "@/services/movie";
-import WatchClient from "@/components/Sections/Watch/WatchClient";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -7,9 +6,10 @@ import Watch from "@/components/Sections/Watch";
 
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string; chapter: string }> }
+  { params }: { params: Promise<{ slug: string; params: string[] }> }
 ): Promise<Metadata> {
-  const { slug, chapter } = await params;
+  const { slug, params: watchParams } = await params;
+  const chapter = watchParams[watchParams.length - 1];
   const [data,err] = await getDetailsMovie(slug);
   if(!data || err) return {}
   const movie = data?.item;
@@ -42,7 +42,7 @@ export async function generateMetadata(
       title,
       description,
       type: (seo?.og_type as any) || 'video.tv_show',
-      url: `/${slug}/${chapter}`,
+      url: `/${slug}/${watchParams.join('/')}`,
       images,
     },
 
@@ -54,20 +54,19 @@ export async function generateMetadata(
     },
 
     alternates: {
-      canonical: `/${slug}/${chapter}`,
+      canonical: `/${slug}/${watchParams.join('/')}`,
     },
   };
 }
 
 
-export default async function WatchPage({ params }: { params: Promise<{ slug: string, chapter: string }> }) {
-    "use memo"
-    const { slug, chapter } = await params;
+export default async function WatchPage({ params }: { params: Promise<{ slug: string, params: string[] }> }) {
+    const { slug, params: watchParams } = await params;
 
     return (
        <main>
          <Suspense>
-         <Watch slug={slug} chapter={chapter}/>
+         <Watch slug={slug} watchParams={watchParams}/>
          </Suspense>
        </main>
     );

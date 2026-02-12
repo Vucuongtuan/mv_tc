@@ -242,7 +242,6 @@ export const getDetailsMovie2 = async (slug: string):Promise<[any | null, Error 
             throw new Error(`Failed to fetch movie details: ${res.status} ${res.statusText}`);
         }
                         const response: MovieListResponse<any> = await res.json();
-                        const { movie } = response;
-                        return movie;
+                        return response;
                     })
                 }

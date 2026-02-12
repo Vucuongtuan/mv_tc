@@ -4,11 +4,16 @@ import { notFound } from "next/navigation";
 import { deepMergeImage, getImageUrl, mapperData } from "@/utils/mapperData";
 import Image from "@/components/Commons/Image";
 import st from '../Hero/hero-details.module.scss'
-import { EpisodeData } from "@/types/type";
+import { EpisodeData, EpisodeServer } from "@/types/type";
 import { Suspense } from "react";
 
+const getServerCategory = (serverName: string) => {
+    const name = serverName.toLowerCase();
+    if (name.includes('thuyết minh') || name.includes('thuyet minh')) return 'thuyet-minh';
+    return 'vietsub'; 
+}
 
-export default async function Watch({slug, chapter}: {slug: string, chapter: string}) {
+export default async function Watch({slug, watchParams}: {slug: string, watchParams: string[]}) {
         const [query1,query2] = await Promise.all([
             getDetailsMovie(slug),
             getDetailsMovie2(slug)
@@ -18,33 +23,69 @@ export default async function Watch({slug, chapter}: {slug: string, chapter: str
         if ((!data1 && !data2) || (err1 && err2)) {
             notFound();
         }
-        const transformData = mapperData(data1.item, data1.APP_DOMAIN_CDN_IMAGE);
-        const deepImageData = await deepMergeImage(transformData, data1.item.slug);
-          
+
+        // @ts-expect-error
+        const transformData = mapperData(data1?.item, data1?.APP_DOMAIN_CDN_IMAGE);
+        // @ts-expect-error
+        const deepImageData = await deepMergeImage(transformData, data1?.item?.slug);
         const movie = deepImageData;
-        let currentEpisode = null;
-        let serverList = movie.episodes || [];
-    
-        for (const server of serverList) {
-            const found = server.server_data.find(ep => ep.slug === chapter);
+        
+        const hasCategoryInUrl = watchParams.length > 1;
+        const urlCategory = hasCategoryInUrl ? watchParams[0] : 'vietsub';
+        const urlEpisodeSlug = hasCategoryInUrl ? watchParams[1] : watchParams[0];
+
+        const primaryServers: EpisodeServer[] = movie.episodes || [];
+        const secondaryServers: EpisodeServer[] = data2.episodes || [];
+        let targetEpisodeInfo: EpisodeData | null = null;
+        for (const server of primaryServers) {
+            const found = server.server_data.find(ep => ep.slug === urlEpisodeSlug);
             if (found) {
-                currentEpisode = found;
+                targetEpisodeInfo = found;
                 break;
             }
         }
-        if(data2 && data2.length > 0){
-            for(const server of data2){
-                const found = server.server_data.find((ep:any) => ep.slug === chapter);
-                if (found) {
-                    currentEpisode = found;
-                    break;
+
+        if (!targetEpisodeInfo) notFound();
+
+        const availableSources: any[] = [];
+        
+        primaryServers.forEach(server => {
+            if (getServerCategory(server.server_name) === urlCategory) {
+                const ep = server.server_data.find(e => e.slug === urlEpisodeSlug || e.name === targetEpisodeInfo?.name);
+                if (ep) {
+                    availableSources.push({
+                        ...ep,
+                        server_name: server.server_name
+                    });
                 }
             }
-        }
-    
-        if (!currentEpisode && serverList.length > 0 && serverList[0].server_data.length > 0) {
-            notFound();
-        }
+        });
+
+        secondaryServers.forEach(server => {
+            if (getServerCategory(server.server_name) === urlCategory) {
+                const ep = server.server_data.find(e => {
+                    const cleanSecondarySlug = e.slug.replace(/^tap-/, '').replace(/^0+/, '');
+                    const cleanUrlSlug = urlEpisodeSlug.replace(/^0+/, '');
+                    
+                    if (cleanSecondarySlug && cleanUrlSlug && cleanSecondarySlug === cleanUrlSlug) return true;
+
+                    const cleanSecondaryName = e.name.replace(/\D/g, '').replace(/^0+/, '');
+                    const cleanTargetName = targetEpisodeInfo?.name.replace(/\D/g, '').replace(/^0+/, '');
+                    
+                    if (cleanSecondaryName && cleanTargetName && cleanSecondaryName === cleanTargetName) return true;
+                    
+                    return e.name === targetEpisodeInfo?.name;
+                });
+                if (ep) {
+                    availableSources.push({
+                        ...ep,
+                        server_name: `${server.server_name} (Backup)`
+                    });
+                }
+            }
+        });
+
+        if (availableSources.length === 0) notFound();
     
     return (
         <article className={'relative'}>
@@ -55,8 +96,9 @@ export default async function Watch({slug, chapter}: {slug: string, chapter: str
             <Suspense>
                    <WatchClient 
             movie={movie} 
-            currentEpisode={currentEpisode as EpisodeData} 
-            episodes={serverList} 
+            currentEpisode={targetEpisodeInfo as EpisodeData} 
+            sources={availableSources} 
+            episodes={primaryServers}
             />
             </Suspense>
         </div>

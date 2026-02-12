@@ -31,7 +31,8 @@ export default function WatchInfo({ movie, currentEpisodeName }: { movie: HeroSl
         </div>
       </div>
       <HtmlRender html={movie.content || ''} className={st.description}/>
-      <Episodes episodes={movie.episodes} slug={movie.slug}/>
+      {/* @ts-expect-error */}
+      <Episodes episodes={movie.episodes} episodes2={movie.episodes2} slug={movie.slug}/>
     </div>
   );
 }
