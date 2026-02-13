@@ -7,6 +7,6 @@ export default function Image(props: React.ComponentProps<typeof NextImage>) {
 
     const { src = '/public/logoFull.png', alt, ...rest } = props;
     return (
-        <NextImage src={`${src}`} alt={alt} defaultValue={'/public/logoFull.png'} blurDataURL={placeholderBlur}  {...rest}  />
+        <NextImage src={`${src}`} alt={alt} defaultValue={'/logoFull.png'} blurDataURL={placeholderBlur}  {...rest}  />
     )
 }
