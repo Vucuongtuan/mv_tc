@@ -31,6 +31,7 @@ export default function HeroClient({ slides }: HeroClientProps) {
           key={slides[currentIndex]._id}
           slide={slides[currentIndex]}
           direction={direction}
+          priority={currentIndex === 0}
           />
       </AnimatePresence>
         <HeroPagination

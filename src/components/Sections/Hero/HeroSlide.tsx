@@ -9,6 +9,7 @@ import Image from '@/components/Commons/Image';
 interface HeroSlideProps {
   slide: HeroSlideData;
   direction: number;
+  priority?: boolean;
 }
 
 const slideVariants = {
@@ -46,7 +47,7 @@ const contentVariants = {
   },
 };
 
-export default function HeroSlide({ slide, direction }: HeroSlideProps) {
+export default function HeroSlide({ slide, direction, priority }: HeroSlideProps) {
   return (
     <motion.div
       className={styles.slide}
@@ -59,10 +60,12 @@ export default function HeroSlide({ slide, direction }: HeroSlideProps) {
       <div className={styles.posterWrapper}>
         <Image 
           src={slide.backgroundImage} 
-          alt="" 
+          alt={slide.title} 
           fill 
           className={styles.posterImage}
-          priority
+          priority={priority}
+          sizes="100vw"
+          {...(priority ? { fetchPriority: "high" } : {})}
         />
       </div>
       <div className={styles.overlay} />

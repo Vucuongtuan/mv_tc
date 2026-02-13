@@ -51,7 +51,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
           alt={movie.name}
           className={styles.thumbnail}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
           placeholder="blur"
           priority={priority}
           loading={priority ? 'eager' : 'lazy'}
@@ -67,7 +67,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
       </figure>
       
       <div className={styles.infoSimple}>
-        <h3 className={styles.originalName}>{movie.name} - {trailerVideoId}</h3>
+        <h3 className={styles.originalName}>{movie.name}</h3>
       </div>
       {
         !isMobile && (
@@ -166,7 +166,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
         )}
       </AnimatePresence>
       )}
-      <Link href={`/phim/${movie.slug}`} className="absolute inset-0 z-10"/>
+      <Link href={`/phim/${movie.slug}`} title={movie.name} className="absolute inset-0 z-10"/>
     </article>
   );
 };
