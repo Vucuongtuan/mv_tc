@@ -10,7 +10,6 @@ import { NotebookTabs, Play, Plus, ThumbsUp } from 'lucide-react';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { getIdEmbedYoutube } from '@/utils/embed';
 import clsx from 'clsx';
-import { useMediaQuery } from '@/hooks/useQueryMedia';
 
 interface MovieCardProps {
   movie: Movie;
@@ -20,9 +19,8 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHover = false }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const isMobile = useMediaQuery('only screen and (max-width: 768px)');
+  
   const handleMouseEnter = useCallback(() => {
     if (!activeHover) return;
     timerRef.current = setTimeout(() => {
@@ -39,7 +37,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
   
   return (
     <article 
-      ref={cardRef}
       className={styles.cardWrapper}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -51,10 +48,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
           alt={movie.name}
           className={styles.thumbnail}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+          sizes="(max-width: 480px) 45vw, (max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 220px"
           placeholder="blur"
           priority={priority}
-          loading={priority ? 'eager' : 'lazy'}
           />
         <div className={styles.badges}>
           {movie.episode_current && (
@@ -69,9 +65,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
       <div className={styles.infoSimple}>
         <h3 className={styles.originalName}>{movie.name}</h3>
       </div>
-      {
-        !isMobile && (
-          <AnimatePresence>
+
+      <div className={styles.hoverContainer}>
+        <AnimatePresence>
         {isHovered && activeHover && (
           <motion.div
             className={styles.hoverOverlay}
@@ -165,7 +161,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
           </motion.div>
         )}
       </AnimatePresence>
-      )}
+      </div>
+      <Link href={`/phim/${movie.slug}`} title={movie.name} className="absolute inset-0 z-10"/>
+    </article>
+  );
+};
       <Link href={`/phim/${movie.slug}`} title={movie.name} className="absolute inset-0 z-10"/>
     </article>
   );

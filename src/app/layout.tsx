@@ -21,7 +21,14 @@ export const metadata: Metadata = {
     template: '%s | TC Phim'
   },
   description: 'Watch movies online',
+  other: {
+    'viewport-fit': 'cover',
+  },
+  alternates: {
+    canonical: '/',
+  }
 }
+
 export default async function RootLayout({
   children,
 }: Readonly<{

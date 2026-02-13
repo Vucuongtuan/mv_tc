@@ -39,6 +39,13 @@
   @apply text-base prose-base text-white line-clamp-2 overflow-hidden;
 }
 
+.hoverContainer {
+  @apply contents;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
 .hoverOverlay {
   @apply absolute z-30 bg-[#181818] rounded-md overflow-hidden flex flex-col;
   top: -10%;
