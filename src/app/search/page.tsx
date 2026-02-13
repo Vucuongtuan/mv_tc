@@ -1,6 +1,7 @@
 import SearchPageClient from "@/components/Features/SearchPage";
 import { getFilterList } from "@/services/movie";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Tìm kiếm phim | TC Phim",
@@ -12,14 +13,21 @@ export default async function SearchPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const genresRes = await getFilterList({ slug: "the-loai" });
-  const genres = genresRes?.data?.items || [];
+  let genres: { _id: string; name: string; slug: string }[] = [];
+  try {
+    const genresRes = await getFilterList({ slug: "the-loai" });
+    genres = genresRes?.data?.items || [];
+  } catch {
+  }
   const params = await searchParams;
   const initialKeyword = typeof params.keyword === 'string' ? params.keyword : '';
 
   return (
     <main className="pt-20 min-h-screen">
+        <Suspense>
+
       <SearchPageClient genres={genres} initialKeyword={initialKeyword} />
+        </Suspense>
     </main>
   );
 }
