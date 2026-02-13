@@ -90,7 +90,6 @@ export const filterMovies = async (movies: Movie[], options: FilterOptions = {})
         finalItems = [...finalItems, ...sortedOther.slice(0, remainingSlots)];
     }
     
-    // Sync trailer data cho các movies đã được filter
     const res = await Promise.all(finalItems.map(async(item) => await syncDataTMDB(item.tmdb.type, item.tmdb.id)));
    
     const result = finalItems.map((item, index) => {

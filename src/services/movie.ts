@@ -39,6 +39,8 @@ export interface Details {
 }
 
 export const syncDataTMDB = async (type: string, id: string): Promise<Details | null> => {
+    'use cache'
+    cacheLife('weeks')
     return await tryC(async () => {
         try {
             const url = `${process.env.SERVER2}tmdb/${type}/${id}`;
