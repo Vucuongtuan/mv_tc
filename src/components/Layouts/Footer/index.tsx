@@ -1,22 +1,70 @@
+'use client';
 
+import { motion } from 'motion/react';
+import styles from './footer.module.scss';
 
+const logoText = 'TC Phim.';
+
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.06,
+        },
+    },
+};
+
+const charVariants = {
+    hidden: {
+        opacity: 0,
+        y: 40,
+        filter: 'blur(8px)',
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: {
+            duration: 0.5,
+            ease: [0.25, 0.1, 0.25, 1],
+        },
+    },
+};
 
 export default function Footer() {
     return (
-        <footer>
-
-
-
-           <div className="h-24 w-full">
-            <div className="flex-1 max-w-screen-4xl border-t-[1px] border-[#2e2e2e]">
-                <div className="flex items-center justify-between">
-                    <div className="flex flex-col text-center w-full py-12 items-center gap-2">
-                        <p className="text-white">Đây là trang web xem phim không có ý định thương mại</p>
-                        <span className="text-white">© 2026 VTCGG</span>
+        <footer className={styles.footer}>
+            <div className={styles.topBar}>
+                <div className={styles.topBarInner}>
+                    <div className={styles.copyright}>
+                        © All rights reserved. {new Date().getFullYear()}
                     </div>
+                    <span className={styles.designedBy}>
+                        Designed in Vucuongtuan
+                    </span>
                 </div>
             </div>
-            </div> 
+
+            <div className={styles.bigLogo}>
+                <motion.div
+                    className={styles.logoText}
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                >
+                    {logoText.split('').map((char, i) => (
+                        <motion.span
+                            key={i}
+                            // @ts-expect-error
+                            variants={charVariants}
+                            style={{ display: 'inline-block' }}
+                        >
+                            {char === ' ' ? '\u00A0' : char}
+                        </motion.span>
+                    ))}
+                </motion.div>
+            </div>
         </footer>
-    )
+    );
 }
