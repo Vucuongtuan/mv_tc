@@ -1,11 +1,13 @@
 import FilterOptions from "@/components/Features/Filter";
 import { FilterCategory } from "@/components/Features/Filter/FilterClient";
 import MovieGallery from "@/components/Features/Gallery";
+import GallerySkeleton from "@/components/Features/Gallery/Skeleton";
 import { getFilterList } from "@/services/movie";
 import { initDataList } from "@/services/actions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cacheLife } from "next/cache";
+import { Suspense } from "react";
 
 const TOPIC_LIST = [
   "phim-moi", "phim-bo", "phim-le", "tv-shows", "hoat-hinh", 
@@ -139,6 +141,24 @@ const findIntidata = async (slug: string, type: 'genre' | 'country' | 'topic', q
 }
 
 
+async function MovieGallerySection({
+  slug, type, queryParams,
+}: {
+  slug: string;
+  type: 'genre' | 'country' | 'topic';
+  queryParams: Record<string, string>;
+}) {
+  const initData = await findIntidata(slug, type as 'genre' | 'country' | 'topic', {
+    ...queryParams,
+    page: '1',
+    limit: '24',
+    sort_field: queryParams.sort_field || 'modified.time',
+    sort_type: queryParams.sort_type || 'desc',
+  });
+
+  return <MovieGallery slug={slug} type={type} initData={initData} />;
+}
+
 export default async function CategoryPage({ 
   params,
   searchParams,
@@ -163,14 +183,6 @@ export default async function CategoryPage({
     }
   }
 
-  const initData = await findIntidata(parsed.slug, parsed.type as 'genre' | 'country' | 'topic', {
-    ...queryParams,
-    page: '1',
-    limit: '24',
-    sort_field: queryParams.sort_field || 'modified.time',
-    sort_type: queryParams.sort_type || 'desc',
-  });
-
   return (
     <main className="pt-24 px-4 md:px-8 lg:px-16">
       <section className="max-w-screen-2xl mx-auto">
@@ -189,7 +201,9 @@ export default async function CategoryPage({
           />
         </header>
         
-        <MovieGallery slug={parsed.slug} type={parsed.type} initData={initData} />
+        <Suspense fallback={<GallerySkeleton />}>
+          <MovieGallerySection slug={parsed.slug} type={parsed.type} queryParams={queryParams} />
+        </Suspense>
       </section>
     </main>
   );

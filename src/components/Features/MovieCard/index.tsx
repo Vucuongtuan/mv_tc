@@ -10,7 +10,7 @@ import { NotebookTabs, Play, Plus, ThumbsUp } from 'lucide-react';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { getIdEmbedYoutube } from '@/utils/embed';
 import clsx from 'clsx';
-import { useMediaQuery } from '@uidotdev/usehooks';
+import { useMediaQuery } from '@/hooks/useQueryMedia';
 
 interface MovieCardProps {
   movie: Movie;

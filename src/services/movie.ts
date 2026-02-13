@@ -203,7 +203,7 @@ export const getSlugGenerateStaticParams = async (time:Date) => {
 
 export const getDetailsMovie = async (slug: string):Promise<[DetailsResponse | null, Error | null]> => {
     'use cache'
-    cacheLife('minutes')
+    cacheLife('hours')
     cacheTag(`details:${slug}`)
     return await tryCache(async () => {
         const cleanSlug = slug.replace(/^(\/)?phim\//, '');
