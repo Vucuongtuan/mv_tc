@@ -5,10 +5,7 @@ import { Movie, MovieListData, MovieListResponse } from "@/types/type"
 import { filterMovies } from "@/utils/movie"
 import { deepMergeImage, mapperData } from "@/utils/mapperData"
 
-/**
- * Fetch danh sách phim theo loại
- * API: GET /v1/api/danh-sach/{slug}?page=1&limit=24&sort_field=modified.time&sort_type=desc&category=hanh-dong&country=trung-quoc&year=2026
- */
+
 export const initDataList = async (
   slug: string, 
   type: 'genre' | 'country' | 'topic', 
