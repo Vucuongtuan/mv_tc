@@ -1,11 +1,11 @@
 import FilterOptions from "@/components/Features/Filter";
 import { FilterCategory } from "@/components/Features/Filter/FilterClient";
 import MovieGallery from "@/components/Features/Gallery";
-import GallerySkeleton from "@/components/Features/Gallery/Skeleton";
 import { getFilterList } from "@/services/movie";
+import { initDataList } from "@/services/actions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { cacheLife } from "next/cache";
 
 const TOPIC_LIST = [
   "phim-moi", "phim-bo", "phim-le", "tv-shows", "hoat-hinh", 
@@ -123,26 +123,53 @@ export async function generateMetadata({
   }
 
   if (parsed.type === 'topic') {
-    return { title: `${parsed.title} | TC Phim` };
+    return { title: `${parsed.title}` };
   }
 
   return { 
-    title: `Phim ${parsed.title} - ${parsed.categoryTitle} | TC Phim` 
+    title: `Phim ${parsed.title} - ${parsed.categoryTitle}` 
   };
 }
 
+const findIntidata = async (slug: string, type: 'genre' | 'country' | 'topic', queryParams: Record<string, string>) => {
+  'use cache'
+  cacheLife('minutes');
+  const initData = await initDataList(slug, type, queryParams);
+  return initData;
+}
 
 
 export default async function CategoryPage({ 
   params,
+  searchParams,
 }: { 
   params: Promise<{ slug: string[] }>,
+  searchParams: Promise<Record<string, string | string[] | undefined>>,
 }) {
   const { slug: slugArray } = await params;
   const parsed = await parseRoute(slugArray);
   if (parsed.type === 'invalid') {
     return notFound();
   }
+
+  const rawSearchParams = await searchParams;
+  const queryParams: Record<string, string> = {};
+  
+  const filterKeys = ['country', 'category', 'year', 'sort_field', 'sort_type'];
+  for (const key of filterKeys) {
+    const value = rawSearchParams[key];
+    if (value && typeof value === 'string') {
+      queryParams[key] = value;
+    }
+  }
+
+  const initData = await findIntidata(parsed.slug, parsed.type as 'genre' | 'country' | 'topic', {
+    ...queryParams,
+    page: '1',
+    limit: '24',
+    sort_field: queryParams.sort_field || 'modified.time',
+    sort_type: queryParams.sort_type || 'desc',
+  });
 
   return (
     <main className="pt-24 px-4 md:px-8 lg:px-16">
@@ -162,9 +189,7 @@ export default async function CategoryPage({
           />
         </header>
         
-        <Suspense fallback={<GallerySkeleton />}>
-          <MovieGallery slug={parsed.slug} type={parsed.type} />
-        </Suspense>
+        <MovieGallery slug={parsed.slug} type={parsed.type} initData={initData} />
       </section>
     </main>
   );
