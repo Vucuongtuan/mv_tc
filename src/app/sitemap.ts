@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getSlugGenerateStaticParams, getTopicParams, getFilterList } from "@/services/movie";
 
+export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.URL || 'http://localhost:3000'
 
