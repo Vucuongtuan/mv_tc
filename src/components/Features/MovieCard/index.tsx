@@ -166,9 +166,5 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
     </article>
   );
 };
-      <Link href={`/phim/${movie.slug}`} title={movie.name} className="absolute inset-0 z-10"/>
-    </article>
-  );
-};
 
 export default MovieCard;
