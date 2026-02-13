@@ -1,0 +1,173 @@
+// AI Chat Styles
+.aiContainer {
+  @apply w-full max-w-2xl mx-auto;
+}
+
+// AI Input Area
+.aiInputWrapper {
+  @apply relative w-full mb-6;
+}
+
+.aiInput {
+  @apply w-full min-h-[56px] max-h-32 pl-5 pr-14 py-4 rounded-2xl resize-none;
+  @apply text-base text-white outline-none leading-relaxed;
+  @apply transition-all duration-300 ease-out;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  font-family: inherit;
+
+  &::placeholder {
+    @apply text-white/40;
+  }
+
+  &:focus {
+    border-color: hsl(var(--primary) / 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.08);
+  }
+}
+
+.aiSendBtn {
+  @apply absolute right-3 bottom-3;
+  @apply w-10 h-10 rounded-xl flex items-center justify-center;
+  @apply cursor-pointer border-none;
+  @apply transition-all duration-200;
+  background: hsl(var(--primary));
+  color: white;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px hsl(var(--primary) / 0.4);
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Quick Suggestions
+.quickSuggestions {
+  @apply flex flex-wrap gap-2 mb-6 justify-center;
+}
+
+.suggestionChip {
+  @apply px-4 py-2 rounded-full text-sm cursor-pointer;
+  @apply border border-white/10 bg-white/5 text-white/60;
+  @apply transition-all duration-200;
+
+  &:hover {
+    @apply text-white bg-white/10 border-white/20;
+  }
+}
+
+// Chat Messages
+.chatMessages {
+  @apply space-y-4 mb-6;
+}
+
+.message {
+  @apply rounded-2xl px-5 py-4;
+  @apply text-sm leading-relaxed;
+  max-width: 90%;
+}
+
+.userMessage {
+  @apply ml-auto text-right;
+  @apply bg-white/10 text-white;
+  border-bottom-right-radius: 4px;
+}
+
+.aiMessage {
+  @apply mr-auto;
+  @apply text-white/90;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom-left-radius: 4px;
+}
+
+.aiMessageHeader {
+  @apply flex items-center gap-2 mb-3 text-xs font-medium text-white/40;
+}
+
+.aiIcon {
+  @apply w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold;
+  background: linear-gradient(135deg, #f5c518, #e6b800);
+  color: #000;
+}
+
+.messageText {
+  @apply whitespace-pre-wrap leading-relaxed;
+}
+
+// Streaming cursor
+.streamingCursor {
+  @apply inline-block w-0.5 h-4 ml-0.5 align-middle;
+  background: hsl(var(--primary));
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+// Movie Suggestion Card (inline in AI response)
+.movieSuggestion {
+  @apply flex items-center gap-3 p-3 my-2 rounded-xl;
+  @apply transition-colors duration-200 no-underline;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.suggestionThumb {
+  @apply relative w-[45px] aspect-[2/3] flex-shrink-0 rounded-md overflow-hidden;
+  @apply bg-white/5;
+}
+
+.suggestionInfo {
+  @apply flex-1 min-w-0;
+}
+
+.suggestionName {
+  @apply text-sm font-medium text-white truncate;
+}
+
+.suggestionReason {
+  @apply text-xs text-white/50 mt-1 line-clamp-2;
+}
+
+.suggestionNotFound {
+  @apply text-xs text-white/30 mt-1 italic;
+}
+
+// Loading dots for AI
+.aiLoading {
+  @apply flex items-center gap-1 py-4 px-5;
+}
+
+.dot {
+  @apply w-2 h-2 rounded-full bg-white/30;
+  animation: dotBounce 1.2s ease-in-out infinite;
+
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.4s; }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.4; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+
+// Error
+.errorMessage {
+  @apply text-center py-6 text-sm text-red-400/80;
+  @apply bg-red-500/5 rounded-xl border border-red-500/10;
+}
