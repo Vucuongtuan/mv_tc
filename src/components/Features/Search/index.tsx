@@ -90,7 +90,7 @@ export default function SearchBar({ className }: SearchBarProps) {
                 </Link>
               ))}
               <Link 
-                href={`/tim-kiem?keyword=${keyword}`} 
+                href={`/search?keyword=${keyword}`} 
                 className={styles.viewAll}
                 onClick={() => setIsOpen(false)}
               >
