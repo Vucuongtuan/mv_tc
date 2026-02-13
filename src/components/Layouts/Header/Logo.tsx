@@ -3,7 +3,7 @@ import styles from './header.module.scss';
 
 export default function Logo() {
   return (
-    <Link href="/" className={styles.logo}>
+    <Link href="/?ref=logo" className={styles.logo}>
       <span className={styles.logoIcon}>TC</span>
       <span className={styles.logoText}>Phim</span>
     </Link>
