@@ -76,7 +76,6 @@ export default function MobileNav() {
               onClick={closeMenu}
             >
               {item.label}
-              {item.isNew && <span className={styles.newBadge}>NEW</span>}
             </Link>
           ))}
         </div>
