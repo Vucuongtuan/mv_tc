@@ -1,9 +1,8 @@
 ---
 name: scss-styling
-description: Guide for writing SCSS Modules combined with TailwindCSS in the portfolio project. Use this skill when styling components, creating CSS animations, and working with design tokens.
+description: Guide for writing SCSS Modules combined with TailwindCSS in the  project. Use this skill when styling components, creating CSS animations, and working with design tokens.
 license: MIT
 metadata:
-  author: portfolio-team
   version: "1.0.0"
   category: styling
   tags: scss, tailwindcss, css-modules, design-system
@@ -11,7 +10,7 @@ metadata:
 
 # SCSS Styling Guide
 
-Comprehensive guide for writing styles following the portfolio_astro project conventions.
+Comprehensive guide for writing styles following the  project conventions.
 
 ## When to Use This Skill
 
