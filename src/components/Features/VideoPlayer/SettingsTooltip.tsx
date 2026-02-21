@@ -5,7 +5,6 @@ import st from "./video-player.module.scss";
 import clsx from "clsx";
 import { Check } from "lucide-react";
 
-
 interface SettingsTooltipProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,7 +13,7 @@ interface SettingsTooltipProps {
   aspectRatio: string;
   onAspectRatioChange: (ratio: string) => void;
   position: { x: number; y: number };
-  servers?: any[];
+  servers?: Array<{ server_name: string; [key: string]: any }>; // type rõ hơn
   selectedServerIndex?: number;
   onServerChange?: (index: number) => void;
 }
@@ -29,20 +28,29 @@ const ASPECT_RATIOS = [
 ];
 const PLAYBACK_RATES = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
-const SettingsTooltip = memo(({ 
-  isOpen, 
-  onClose, 
-  playbackRate, 
+const SettingsTooltip = memo(({
+  isOpen,
+  onClose,
+  playbackRate,
   onPlaybackRateChange,
   aspectRatio,
   onAspectRatioChange,
   position,
   servers,
   selectedServerIndex,
-  onServerChange
+  onServerChange,
 }: SettingsTooltipProps) => {
-  const [activeTab, setActiveTab] = useState<'speed' | 'ratio' | 'server'>(servers ? 'server' : 'speed');
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  const [activeTab, setActiveTab] = useState<'speed' | 'ratio' | 'server'>('speed');
+
+  const hasServers = (servers?.length ?? 0) > 0;
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setActiveTab(hasServers ? 'server' : 'speed');
+  }, [isOpen, hasServers]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -60,7 +68,7 @@ const SettingsTooltip = memo(({
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       ref={tooltipRef}
       className={st.settingsTooltip}
       style={{
@@ -69,21 +77,26 @@ const SettingsTooltip = memo(({
       }}
     >
       <div className={st.settingsHeader}>
-        {servers && (
+        {hasServers && (
           <button
+            type="button"
             className={clsx(st.settingsTab, activeTab === 'server' && st.active)}
             onClick={() => setActiveTab('server')}
           >
             Server
           </button>
         )}
+
         <button
+          type="button"
           className={clsx(st.settingsTab, activeTab === 'speed' && st.active)}
           onClick={() => setActiveTab('speed')}
         >
           Tốc độ
         </button>
+
         <button
+          type="button"
           className={clsx(st.settingsTab, activeTab === 'ratio' && st.active)}
           onClick={() => setActiveTab('ratio')}
         >
@@ -92,18 +105,19 @@ const SettingsTooltip = memo(({
       </div>
 
       <div className={st.settingsContent}>
-        {activeTab === 'server' && servers && (
+        {activeTab === 'server' && hasServers && (
           <div className={st.settingsSection}>
-            {servers.map((server, idx) => (
+            {servers!.map((server, idx) => (
               <button
                 key={idx}
+                type="button"
                 className={clsx(
                   st.settingsOption,
                   selectedServerIndex === idx && st.active
                 )}
                 onClick={() => {
                   onServerChange?.(idx);
-                  onClose();
+                  onClose(); // UX: chọn xong đóng luôn
                 }}
               >
                 <span>{server.server_name}</span>
@@ -118,6 +132,7 @@ const SettingsTooltip = memo(({
             {PLAYBACK_RATES.map((rate) => (
               <button
                 key={rate}
+                type="button"
                 className={clsx(
                   st.settingsOption,
                   playbackRate === rate && st.active
@@ -139,6 +154,7 @@ const SettingsTooltip = memo(({
             {ASPECT_RATIOS.map((ratio) => (
               <button
                 key={ratio.value}
+                type="button"
                 className={clsx(
                   st.settingsOption,
                   aspectRatio === ratio.value && st.active
