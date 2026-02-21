@@ -100,6 +100,15 @@
   }
 }
 
+.tvToggle {
+  @extend .iconButton;
+  
+  &.active {
+    @apply text-[#f5c518] bg-white/10;
+    box-shadow: 0 0 15px rgba(245, 197, 24, 0.3);
+  }
+}
+
 .memberButton {
   @apply flex items-center gap-2;
   @apply px-5 py-2.5 border border-white/10 rounded-full;

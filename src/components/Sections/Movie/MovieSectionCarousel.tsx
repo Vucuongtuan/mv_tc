@@ -16,11 +16,10 @@ const MovieSectionCarousel: React.FC<MovieSectionCarouselProps> = ({ movies, cdn
   const isTablet = useMediaQuery("only screen and (min-width: 640px) and (max-width: 1023px)");
 
   return (
-    <div>
       <MovieCarousel itemWidth={isMobile ? 160 : isTablet ? 240 : 320} gap={16}>
         {movies.map((movie, idx) => (
-          <div key={movie._id + '-' + idx}>
             <MovieCard
+            key={movie._id + '-' + idx}
               activeHover={!isMobile && !isTablet}
               movie={{
                 ...movie,
@@ -28,10 +27,8 @@ const MovieSectionCarousel: React.FC<MovieSectionCarouselProps> = ({ movies, cdn
                 poster_url: `${cdnImage}/${movie.poster_url}`
               }}
             />
-          </div>
         ))}
       </MovieCarousel>
-    </div>
   );
 };
 

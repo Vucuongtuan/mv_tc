@@ -10,6 +10,7 @@ import { NotebookTabs, Play, Plus, ThumbsUp } from 'lucide-react';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { getIdEmbedYoutube } from '@/utils/embed';
 import clsx from 'clsx';
+import { useTvMode } from '@/hooks/useTvMode';
 
 interface MovieCardProps {
   movie: Movie;
@@ -20,18 +21,31 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHover = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const { isTvMode } = useTvMode();
   
   const handleMouseEnter = useCallback(() => {
-    if (!activeHover) return;
+    if (!activeHover || isTvMode) return;
     timerRef.current = setTimeout(() => {
       setIsHovered(true);
     }, 400);
-  }, [activeHover]);
+  }, [activeHover, isTvMode]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isTvMode) return;
     if (timerRef.current) clearTimeout(timerRef.current);
     setIsHovered(false);
-  }, []);
+  }, [isTvMode]);
+
+  const handleFocus = useCallback(() => {
+    if (!activeHover || !isTvMode) return;
+    setIsHovered(true);
+  }, [activeHover, isTvMode]);
+
+  const handleBlur = useCallback(() => {
+    if (!isTvMode) return;
+    setIsHovered(false);
+  }, [isTvMode]);
+
   const trailerVideoId = movie?.trailer_url ? getIdEmbedYoutube(movie?.trailer_url) : null;
   
   
@@ -162,7 +176,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, priority = false, activeHo
         )}
       </AnimatePresence>
       </div>
-      <Link href={`/phim/${movie.slug}`} title={movie.name} className="absolute inset-0 z-10"/>
+      <Link 
+        href={`/phim/${movie.slug}`} 
+        title={movie.name} 
+        className="absolute inset-0 z-10"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
     </article>
   );
 };

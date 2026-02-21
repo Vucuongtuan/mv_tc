@@ -25,7 +25,6 @@ export default async function SearchPage({
   return (
     <main className="pt-20 min-h-screen">
         <Suspense>
-
       <SearchPageClient genres={genres} initialKeyword={initialKeyword} />
         </Suspense>
     </main>

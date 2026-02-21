@@ -23,10 +23,14 @@ const SectionInView: React.FC<SectionInViewProps> = ({ children, fallback }) => 
     }
   }, [entry?.isIntersecting, hasBeenInView]);
 
+  if (hasBeenInView) {
+    return <>{children}</>;
+  }
+
   return (
-    <div ref={ref} className="min-h-[200px]">
-      {hasBeenInView ? children : fallback}
-    </div>
+    <section ref={ref} className="min-h-[200px]">
+      {fallback}
+    </section>
   );
 };
 

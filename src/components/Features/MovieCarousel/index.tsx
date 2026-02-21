@@ -86,6 +86,32 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
     return () => unsubscribe();
   }, [constraints]);
 
+  const handleItemFocus = (index: number) => {
+    if (!containerRef.current) return;
+    
+    const containerWidth = containerRef.current.offsetWidth;
+    const itemOffsetLeft = index * (itemWidth + gap);
+    const currentX = x.get();
+    
+    const itemLeftInContainer = itemOffsetLeft + currentX;
+    const itemRightInContainer = itemLeftInContainer + itemWidth;
+    
+    let newX = currentX;
+    
+    if (itemLeftInContainer < 0) {
+      newX = -itemOffsetLeft;
+    } else if (itemRightInContainer > containerWidth) {
+      newX = containerWidth - itemOffsetLeft - itemWidth;
+    }
+    
+    if (newX !== currentX) {
+      controls.start({ 
+        x: Math.max(constraints.left, Math.min(0, newX)), 
+        transition: { type: 'spring', stiffness: 300, damping: 30 } 
+      });
+    }
+  };
+
   return (
     <div className={styles.carouselWrapper}>
       {/* Navigation Button - Left */}
@@ -117,6 +143,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
               key={index}
               className={styles.carouselItem}
               style={{ minWidth: itemWidth, maxWidth: itemWidth }}
+              onFocusCapture={() => handleItemFocus(index)}
             >
               {child}
             </div>

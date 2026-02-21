@@ -9,6 +9,7 @@ import BottomNav from "@/components/Layouts/BottomNav";
 import SecurityGuard from "@/components/Commons/SecurityGuard";
 import { ReactQueryClientProvider } from "./provider-tanstack";
 import { WebSiteJsonLd } from "@/components/Commons/JsonLd";
+import { TvModeProvider } from "@/hooks/useTvMode";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -46,11 +47,12 @@ export default async function RootLayout({
         <WebSiteJsonLd />
         <ViewTransition>
           <ReactQueryClientProvider>
-
-          <Header/>
-        {children}
-        <Footer/>
-        <BottomNav />
+            <TvModeProvider>
+              <Header/>
+              {children}
+              <Footer/>
+              <BottomNav />
+            </TvModeProvider>
           </ReactQueryClientProvider>
         </ViewTransition>
 
