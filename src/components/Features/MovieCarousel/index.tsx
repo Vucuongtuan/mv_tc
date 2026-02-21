@@ -112,6 +112,8 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
     }
   };
 
+
+
   return (
     <div className={styles.carouselWrapper}>
       {/* Navigation Button - Left */}

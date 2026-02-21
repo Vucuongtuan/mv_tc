@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { clsx } from 'clsx';
 import st from './watch-page.module.scss';
 import { Movie, EpisodeServer, HeroSlideData } from '@/types/type';
+import Episodes from '@/components/Features/Episodes';
 
 export default function WatchSidebar({ 
   movie, 
@@ -16,6 +17,8 @@ export default function WatchSidebar({
 }) {
   return (
     <aside className={st.sidebar}>
+      {/* @ts-expect-error */}
+      <Episodes episodes={movie.episodes} episodes2={movie.episodes2} slug={movie.slug}/>
       <div className={st.castSection}>
         <h3>Diễn viên</h3>
         <div className={st.castGrid}>

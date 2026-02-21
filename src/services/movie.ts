@@ -176,6 +176,64 @@ export const getFilterList = async ({slug}: {slug: string}): Promise<TopicFetch 
     })
 }
 
+// Danh sách thể loại ưu tiên hiển thị trên trang chủ
+const PRIORITY_GENRES = ['hanh-dong', 'tinh-cam', 'kinh-di', 'vien-tuong', 'hoat-hinh', 'hai-huoc', 'co-trang', 'tam-ly'];
+
+export interface GenrePreview {
+    _id: string;
+    name: string;
+    slug: string;
+    thumbnail?: string;
+    movieCount?: number;
+}
+
+export const getGenreWithPreview = async (): Promise<GenrePreview[] | null> => {
+    'use cache'
+    cacheLife('weeks')
+    return await tryC(async () => {
+        // 1. Lấy danh sách thể loại
+        const genreData = await getFilterList({ slug: 'the-loai' });
+        if (!genreData?.data?.items) return null;
+
+        const allGenres = genreData.data.items;
+        
+        const selectedGenres: typeof allGenres = [];
+        for (const slug of PRIORITY_GENRES) {
+            const found = allGenres.find(g => g.slug === slug);
+            if (found && selectedGenres.length < 6) {
+                selectedGenres.push(found);
+            }
+        }
+        if (selectedGenres.length < 6) {
+            for (const genre of allGenres) {
+                if (!selectedGenres.find(g => g.slug === genre.slug) && selectedGenres.length < 6) {
+                    selectedGenres.push(genre);
+                }
+            }
+        }
+
+        const previews = await Promise.all(
+            selectedGenres.map(async (genre) => {
+                const movies = await getMoviesBySLug(genre.slug, 1, 'category');
+                const thumb = movies?.items?.[0]?.poster_url;
+                const cdnImage = movies?.APP_DOMAIN_CDN_IMAGE 
+                    ? `${movies.APP_DOMAIN_CDN_IMAGE}/uploads/movies` 
+                    : '';
+                
+                return {
+                    _id: genre._id,
+                    name: genre.name,
+                    slug: genre.slug,
+                    thumbnail: thumb ? `${cdnImage}/${thumb}` : undefined,
+                    movieCount: movies?.pagination?.totalItems,
+                };
+            })
+        );
+
+        return previews;
+    })
+}
+
 
 
 const LIMIT_DETAILS = process.env.LIMIT_DETAILS || 50

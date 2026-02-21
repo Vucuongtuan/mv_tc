@@ -1,9 +1,10 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import Hero from "./Hero";
 import MovieSection from "./Movie";
 import UpcomingMovies from "./UpcomingMovies";
 import MovieCarouselLoading from "../Features/MovieCarousel/Loading";
 import SectionInView from "./SectionInView";
+import GenreDiscovery from "./GenreDiscovery";
 
 
 const listSection = [
@@ -76,11 +77,23 @@ export default function Sections() {
                 <MovieSection slug={section.slug} title={section.title} type={section.type} />
             );
 
+            // Chèn GenreDiscovery sau section thứ 3 (Phim Trung Quốc)
+            const genreSection = index === 2 ? (
+                <SectionInView key="genre-discovery" fallback={fallback}>
+                    <Suspense fallback={fallback}>
+                        <GenreDiscovery />
+                    </Suspense>
+                </SectionInView>
+            ) : null;
+
             if (isInitial) {
                 return (
-                    <Suspense key={index} fallback={fallback}>
-                        {content}
-                    </Suspense>
+                    <React.Fragment key={index}>
+                        <Suspense fallback={fallback}>
+                            {content}
+                        </Suspense>
+                        {genreSection}
+                    </React.Fragment>
                 )
             }
 

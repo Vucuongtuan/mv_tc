@@ -6,6 +6,8 @@ import Image from "@/components/Commons/Image";
 import st from '../Hero/hero-details.module.scss'
 import { EpisodeData, EpisodeServer } from "@/types/type";
 import { Suspense } from "react";
+import MovieSection from "../Movie";
+import MovieCarouselLoading from "@/components/Features/MovieCarousel/Loading";
 
 const getServerCategory = (serverName: string) => {
     const name = serverName.toLowerCase();
@@ -101,6 +103,18 @@ export default async function Watch({slug, watchParams}: {slug: string, watchPar
             episodes={primaryServers}
             />
             </Suspense>
+            {data1?.item?.category?.[0] && (
+                <Suspense fallback={<MovieCarouselLoading />}>
+                    <MovieSection 
+                        slug={data1.item.category[0].slug}
+                        title="Phim Liên Quan"
+                        type="category"
+                        limit={16}
+                        excludeSlug={slug}
+                        heading="h3"
+                    />
+                </Suspense>
+            )}
         </div>
         </article>
     );

@@ -1,9 +1,10 @@
 'use client';
 
-import { Share2, AlertTriangle, List, Server, Cpu, ExternalLink, Sparkles } from 'lucide-react';
+import { Share2, AlertTriangle, List, Server, Cpu, ExternalLink, Sparkles, SkipForward } from 'lucide-react';
 import st from './watch-page.module.scss';
 import { clsx } from 'clsx';
 import { EpisodeServer } from '@/types/type';
+import Link from 'next/link';
 
 interface WatchActionsProps {
   servers: EpisodeServer[];
@@ -13,6 +14,7 @@ interface WatchActionsProps {
   onToggleMode: () => void;
   isAmbientMode: boolean;
   onToggleAmbientMode: () => void;
+  nextEpisodeUrl?: string | null;
 }
 
 export default function WatchActions({ 
@@ -22,7 +24,8 @@ export default function WatchActions({
   isEmbed,
   onToggleMode,
   isAmbientMode,
-  onToggleAmbientMode
+  onToggleAmbientMode,
+  nextEpisodeUrl
 }: WatchActionsProps) {
   return (
     <div className={st.actionRow}>
@@ -78,6 +81,18 @@ export default function WatchActions({
           </button>
         )}
 
+        {/* Next Episode Button */}
+        {nextEpisodeUrl ? (
+          <Link href={nextEpisodeUrl} className={st.btnNext}>
+            <SkipForward size={16} />
+            Tập tiếp theo
+          </Link>
+        ) : (
+          <button className={st.btnNext} disabled>
+            <SkipForward size={16} />
+            Tập tiếp theo
+          </button>
+        )}
       </div>
 
       <div className="flex gap-4">
@@ -89,3 +104,4 @@ export default function WatchActions({
     </div>
   );
 }
+

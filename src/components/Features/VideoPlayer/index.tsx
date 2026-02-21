@@ -20,7 +20,8 @@ export default function VideoPlayer(props: VideoPlayerProps) {
         isAmbientMode,
         canvasRef,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        isInitialLoad
     } = controls;
 
     return (
@@ -43,7 +44,7 @@ export default function VideoPlayer(props: VideoPlayerProps) {
             )}
 
             <div className={st.mainPlayerContent}>
-                {isLoading && <LoadingScreen />}
+                {isLoading && <LoadingScreen minimal={!isInitialLoad} />}
 
                 {useEmbed ? (
                     <Embed 

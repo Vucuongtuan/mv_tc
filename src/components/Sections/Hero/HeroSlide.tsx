@@ -5,6 +5,7 @@ import { Star, Play, Heart, Info } from 'lucide-react';
 import styles from './hero.module.scss';
 import { HeroSlideData } from '@/types/type';
 import Image from '@/components/Commons/Image';
+import Link from 'next/link';
 
 interface HeroSlideProps {
   slide: HeroSlideData;
@@ -126,14 +127,10 @@ export default function HeroSlide({ slide, direction, priority }: HeroSlideProps
 
         {/* Actions */}
         <div className={styles.actions}>
-          <button className={styles.primaryBtn}>
+          <Link href={`/phim/${slide.slug}`} className={styles.primaryBtn}>
             <Play size={20} fill="currentColor" />
             Xem Ngay
-          </button>
-          <button className={styles.secondaryBtn}>
-            <Info size={20} />
-            Chi tiết
-          </button>
+          </Link>
         </div>
       </motion.div>
     </motion.div>

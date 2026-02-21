@@ -27,7 +27,7 @@
 }
 
 .episodeGrid {
-    @apply grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 sm:gap-3 list-none p-0 m-0;
+    @apply grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3 list-none p-0 m-0;
     
     .episodeBtn {
         @apply flex items-center justify-center h-10 sm:h-11 rounded-lg bg-white/5 border border-white/10 text-xs sm:text-sm font-bold transition-all;

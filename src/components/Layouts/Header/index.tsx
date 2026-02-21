@@ -10,7 +10,6 @@ import AuthButton, { AuthButtonClient } from './AuthButton';
 import HeaderBackground from './HeaderBackground';
 import { Suspense } from 'react';
 import SearchBar from '@/components/Features/Search';
-import TvModeToggle from './TvModeToggle';
 
 export default function Header() {
   return (
@@ -24,9 +23,6 @@ export default function Header() {
         <Navigation />
 
         <div className={styles.rightSection}>
-          <Suspense fallback={null}>
-            <TvModeToggle />
-          </Suspense>
           <Suspense fallback={<AuthButtonClient />}>
             <AuthButton />
           </Suspense>

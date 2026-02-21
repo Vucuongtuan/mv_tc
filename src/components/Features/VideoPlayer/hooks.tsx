@@ -11,7 +11,7 @@ export interface VideoPlayerProps {
   embedUrl?: string;
   poster?: string;
   title?: string;
-  onTimeUpdate?: (currentTime: number) => void;
+  onTimeUpdate?: (currentTime: number, duration: number) => void;
   onEnded?: () => void;
   autoPlay?: boolean;
   initialTime?: number;
@@ -20,6 +20,8 @@ export interface VideoPlayerProps {
   onServerChange?: (index: number) => void;
   isAmbientMode?: boolean;
   onToggleAmbientMode?: () => void;
+  isInitialLoad?: boolean;
+  onReady?: () => void;
 }
 
 function usePlayerControls({
@@ -35,7 +37,9 @@ function usePlayerControls({
   selectedServerIndex,
   onServerChange,
   isAmbientMode: isAmbientModeProp,
-  onToggleAmbientMode
+  onToggleAmbientMode,
+  isInitialLoad: isInitialLoadProp = true,
+  onReady
 }:VideoPlayerProps) {
       const [isPlaying, setIsPlaying] = useState(autoPlay);
       const [volume, setVolume] = useState(1);
@@ -105,10 +109,7 @@ function usePlayerControls({
         try {
           video.load();
         } catch (e) {
-            console.log("============================");
-            
-            console.log({e});
-            
+          // silently handle cleanup errors
         }
       }
     };
@@ -162,12 +163,16 @@ function usePlayerControls({
   useEffect(() => {
     const video = videoRef.current;
     if (!video || useEmbed) {
-        if(useEmbed) setIsLoading(false);
+        if(useEmbed) {
+            setIsLoading(false);
+            onReady?.();
+        }
         return;
     };
 
     const handleCanPlay = () => {
       setIsLoading(false);
+      onReady?.();
       if (initialTime > 0) {
         video.currentTime = initialTime;
       }
@@ -196,7 +201,7 @@ function usePlayerControls({
     if (Math.abs(current - lastTimeUpdateRef.current) > 0.1) {
       setCurrentTime(current);
       lastTimeUpdateRef.current = current;
-      onTimeUpdate?.(current);
+      onTimeUpdate?.(current, video.duration || 0);
     }
 
     if (video.buffered.length > 0) {
@@ -470,6 +475,7 @@ function usePlayerControls({
     handleMouseMove,
     isLoading,
     setIsLoading,
+    isInitialLoad: isInitialLoadProp,
     isFullscreen,
     handleTimeUpdate,
     handleLoadedMetadata,

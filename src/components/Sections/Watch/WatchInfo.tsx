@@ -18,7 +18,7 @@ export default function WatchInfo({ movie, currentEpisodeName }: { movie: HeroSl
         <div className={st.meta}>
           <h2>{movie.title}</h2>
           <div className={st.tags}>
-            {movie.category?.map((c, i) => <span key={i}>{c.name} - {currentEpisodeName}</span>)}
+            {movie.category?.map((c, i) => <span key={i}>{c.name}</span>)}
           </div>
           <div className={st.badges}>
             <span className={st.badge}>{movie.rating === 0 ? 'N/A' : movie.rating}</span>
@@ -31,8 +31,7 @@ export default function WatchInfo({ movie, currentEpisodeName }: { movie: HeroSl
         </div>
       </div>
       <HtmlRender html={movie.content || ''} className={st.description}/>
-      {/* @ts-expect-error */}
-      <Episodes episodes={movie.episodes} episodes2={movie.episodes2} slug={movie.slug}/>
+  
     </div>
   );
 }

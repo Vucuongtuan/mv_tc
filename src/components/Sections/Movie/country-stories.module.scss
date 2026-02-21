@@ -1,5 +1,5 @@
 .container {
-  @apply mx-auto max-w-screen-4xl;
+  @apply mx-auto max-w-screen-4xl relative z-10;
   padding: 2rem 4rem;
   overflow-x: clip; 
   overflow-y: visible;

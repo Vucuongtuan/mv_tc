@@ -304,39 +304,4 @@ main {
   animation-duration:5s;
   border-radius: 1rem;
 }
-
-/* TV Mode specific styles */
-.tv-mode {
-  /* Hide cursor on TV if needed, or keep it if they use a mouse/air-mouse */
-  /* cursor: none; */
-}
-
-.tv-mode :focus {
-  outline: 4px solid #f5c518 !important;
-  outline-offset: 2px !important;
-  box-shadow: 0 0 25px rgba(245, 197, 24, 0.6) !important;
-  transform: scale(1.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
-  z-index: 100;
-  position: relative;
-}
-
-/* Ensure focusable elements are clearly marked */
-.tv-mode a, 
-.tv-mode button, 
-.tv-mode input, 
-.tv-mode [tabindex="0"] {
-  @apply transition-transform duration-200;
-}
-
-/* Specific component tweaks for TV mode */
-.tv-mode .swiper-button-next,
-.tv-mode .swiper-button-prev {
-  @apply opacity-100 scale-125;
-}
-
-/* Larger text for 10-foot UI */
-.tv-mode h1 { font-size: 3rem; }
-.tv-mode h2 { font-size: 2.2rem; }
-.tv-mode .text-sm { font-size: 1rem; }
-.tv-mode .text-base { font-size: 1.15rem; }
+*/
