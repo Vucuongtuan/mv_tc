@@ -156,7 +156,11 @@ async function MovieGallerySection({
     sort_type: queryParams.sort_type || 'desc',
   });
 
-  return <MovieGallery slug={slug} type={type} initData={initData} />;
+  return (
+    <Suspense fallback={<GallerySkeleton />}>
+      <MovieGallery slug={slug} type={type} initData={initData} />
+    </Suspense>
+  );
 }
 
 export default async function CategoryPage({ 
@@ -201,9 +205,7 @@ export default async function CategoryPage({
           />
         </header>
         
-        <Suspense fallback={<GallerySkeleton />}>
           <MovieGallerySection slug={parsed.slug} type={parsed.type} queryParams={queryParams} />
-        </Suspense>
       </section>
     </main>
   );
