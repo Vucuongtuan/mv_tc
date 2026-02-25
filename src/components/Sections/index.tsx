@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import Hero from "./Hero";
 import MovieSection from "./Movie";
-import UpcomingMovies from "./UpcomingMovies";
 import MovieCarouselLoading from "../Features/MovieCarousel/Loading";
 import SectionInView from "./SectionInView";
 import GenreDiscovery from "./GenreDiscovery";
@@ -69,18 +68,23 @@ export default function Sections() {
         <>
         {listSection.map((section,index)=>{
             const isInitial = index < 3;
-            const fallback = <MovieCarouselLoading />;
+            const fallback = section.section === 'Hero' 
+                ? <div className="h-[60vh] md:h-[80vh] w-full bg-neutral-900/50 animate-pulse" /> 
+                : <MovieCarouselLoading />;
             
             const content = section.section === 'Hero' ? (
-                <Hero />
+                <Suspense fallback={fallback}>
+                    <Hero />
+                </Suspense>
             ) : (
-                <MovieSection slug={section.slug} title={section.title} type={section.type} />
+                <Suspense fallback={fallback}>
+                    <MovieSection slug={section.slug} title={section.title} type={section.type} />
+                </Suspense>
             );
 
-            // Chèn GenreDiscovery sau section thứ 3 (Phim Trung Quốc)
             const genreSection = index === 2 ? (
-                <SectionInView key="genre-discovery" fallback={fallback}>
-                    <Suspense fallback={fallback}>
+                <SectionInView key="genre-discovery" fallback={<MovieCarouselLoading />}>
+                    <Suspense fallback={<MovieCarouselLoading />}>
                         <GenreDiscovery />
                     </Suspense>
                 </SectionInView>
@@ -89,9 +93,7 @@ export default function Sections() {
             if (isInitial) {
                 return (
                     <React.Fragment key={index}>
-                        <Suspense fallback={fallback}>
-                            {content}
-                        </Suspense>
+                        {content}
                         {genreSection}
                     </React.Fragment>
                 )
@@ -99,9 +101,7 @@ export default function Sections() {
 
             return (
                 <SectionInView key={index} fallback={fallback}>
-                    <Suspense fallback={fallback}>
-                        {content}
-                    </Suspense>
+                    {content}
                 </SectionInView>
             )
         })}

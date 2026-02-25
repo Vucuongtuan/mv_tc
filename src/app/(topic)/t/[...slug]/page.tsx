@@ -141,14 +141,25 @@ const findIntidata = async (slug: string, type: 'genre' | 'country' | 'topic', q
 }
 
 
-async function MovieGallerySection({
-  slug, type, queryParams,
+async function MovieGalleryData({
+  slug, type, searchParamsPromise,
 }: {
   slug: string;
   type: 'genre' | 'country' | 'topic';
-  queryParams: Record<string, string>;
+  searchParamsPromise: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const initData = await findIntidata(slug, type as 'genre' | 'country' | 'topic', {
+  const rawSearchParams = await searchParamsPromise;
+  const queryParams: Record<string, string> = {};
+  
+  const filterKeys = ['country', 'category', 'year', 'sort_field', 'sort_type'];
+  for (const key of filterKeys) {
+    const value = rawSearchParams[key];
+    if (value && typeof value === 'string') {
+      queryParams[key] = value;
+    }
+  }
+
+  const initData = await findIntidata(slug, type, {
     ...queryParams,
     page: '1',
     limit: '24',
@@ -156,11 +167,7 @@ async function MovieGallerySection({
     sort_type: queryParams.sort_type || 'desc',
   });
 
-  return (
-    <Suspense fallback={<GallerySkeleton />}>
-      <MovieGallery slug={slug} type={type} initData={initData} />
-    </Suspense>
-  );
+  return <MovieGallery slug={slug} type={type} initData={initData} />;
 }
 
 export default async function CategoryPage({ 
@@ -174,17 +181,6 @@ export default async function CategoryPage({
   const parsed = await parseRoute(slugArray);
   if (parsed.type === 'invalid') {
     return notFound();
-  }
-
-  const rawSearchParams = await searchParams;
-  const queryParams: Record<string, string> = {};
-  
-  const filterKeys = ['country', 'category', 'year', 'sort_field', 'sort_type'];
-  for (const key of filterKeys) {
-    const value = rawSearchParams[key];
-    if (value && typeof value === 'string') {
-      queryParams[key] = value;
-    }
   }
 
   return (
@@ -204,8 +200,14 @@ export default async function CategoryPage({
             currentSlug={parsed.slug} 
           />
         </header>
-        
-          <MovieGallerySection slug={parsed.slug} type={parsed.type} queryParams={queryParams} />
+
+        <Suspense fallback={<GallerySkeleton />}>
+          <MovieGalleryData 
+            slug={parsed.slug} 
+            type={parsed.type as 'genre' | 'country' | 'topic'} 
+            searchParamsPromise={searchParams} 
+          />
+        </Suspense>
       </section>
     </main>
   );

@@ -3,7 +3,7 @@ import { Movie } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
 import MovieCard from "../MovieCard";
 import GallerySkeleton from "./Skeleton";
-import { useMemo, useState, ViewTransition } from "react";
+import { useMemo, useState } from "react";
 import { Pagination } from "./Paginations";
 import { initDataList } from "@/services/actions";
 import { useSearchParams } from "next/navigation";
@@ -101,7 +101,6 @@ export default function MovieGallery({ slug, type, initData }: MovieGalleryProps
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {items.map((item: Movie) => (
             <li key={item._id}>
-              <ViewTransition name={`poster-pt-${item.slug}`} share="poster-shared">
                 <MovieCard 
                   movie={{
                       ...item, 
@@ -110,7 +109,6 @@ export default function MovieGallery({ slug, type, initData }: MovieGalleryProps
                   }} 
                   activeHover={true} 
                   />
-                  </ViewTransition>
             </li>
           ))}
 

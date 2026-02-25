@@ -8,7 +8,6 @@ import MovieCard from '../MovieCard';
 import styles from './search-page.module.scss';
 import { Search, Sparkles, Film } from 'lucide-react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ViewTransition } from 'react';
 import AiChat from './AiChat';
 
 interface Genre {
@@ -159,7 +158,6 @@ export default function SearchPageClient({ genres, initialKeyword = '' }: Search
               <ul className={styles.resultsGrid}>
                 {movies.map((movie: Movie) => (
                   <li key={movie._id}>
-                    <ViewTransition name={`poster-search-${movie.slug}`} share="poster-shared">
                       <MovieCard
                         movie={{
                           ...movie,
@@ -168,7 +166,6 @@ export default function SearchPageClient({ genres, initialKeyword = '' }: Search
                         }}
                         activeHover={true}
                       />
-                    </ViewTransition>
                   </li>
                 ))}
               </ul>

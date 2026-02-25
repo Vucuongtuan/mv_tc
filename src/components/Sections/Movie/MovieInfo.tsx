@@ -5,7 +5,7 @@ import { Play, Share2, Star, Clock, Calendar, ListPlus, Film } from 'lucide-reac
 import { HeroSlideData, Movie, EpisodeServer, EpisodeData } from '@/types/type';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { getIdEmbedYoutube } from '@/utils/embed';
-import { Suspense, ViewTransition } from 'react';
+import { Suspense } from 'react';
 import { getImageUrl } from '@/utils/mapperData';
 import Episodes from '@/components/Features/Episodes';
 import { Button } from '@/components/Commons/Button';
@@ -48,9 +48,7 @@ export default function MovieInfo({ movie, transformData }: { movie: Movie, tran
             <header className={st.headerSection}>
                 <figure className={st.posterWrapper}>
                     <div className={st.poster}>
-                        <ViewTransition name={`poster-pt-${movie.slug}`}>
                         <Image src={getImageUrl(images?.primaryPoster,'w500')} alt={title} width={342} height={513} placeholder='blur' />
-                        </ViewTransition>
                         <span className={st.badge}>{quality}</span>
                     </div>
                 </figure>

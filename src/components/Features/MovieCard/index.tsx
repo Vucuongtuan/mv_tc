@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback, ViewTransition } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from '@/components/Commons/Image';
 import styles from './movie-card.module.scss';

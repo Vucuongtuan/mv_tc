@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ViewTransition } from 'react'
+
 import Header from "@/components/Layouts/Header";
 import Footer from "@/components/Layouts/Footer";
 import BottomNav from "@/components/Layouts/BottomNav";
@@ -44,14 +44,12 @@ export default async function RootLayout({
       >
         <SecurityGuard />
         <WebSiteJsonLd />
-        <ViewTransition>
           <ReactQueryClientProvider>
               <Header/>
               {children}
               <Footer/>
               <BottomNav />
           </ReactQueryClientProvider>
-        </ViewTransition>
 
       </body>
     </html>

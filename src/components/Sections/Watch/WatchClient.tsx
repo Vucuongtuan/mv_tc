@@ -7,7 +7,7 @@ import WatchActions from './WatchActions';
 import WatchInfo from './WatchInfo';
 import WatchSidebar from './WatchSidebar';
 import NextEpisodePopup from './NextEpisodePopup';
-import { Suspense, useState, useMemo, ViewTransition, useCallback, useEffect, useRef } from 'react';
+import { Suspense, useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { getImageUrl } from '@/utils/mapperData';
 import Placeholder from './Plaholder';
 import VideoPlayer from '@/components/Features/VideoPlayer';
@@ -132,7 +132,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
       />
 
       <div className={st.playerSection}>
-        <ViewTransition name={`movie-${movie.slug}`}>
         <Suspense fallback={<Placeholder/>}>
           <VideoPlayer 
             key={`${currentSource.server_name}-${currentEpisode.slug}-${isEmbed}`} 
@@ -160,7 +159,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
             onDismiss={handleDismissPopup}
           />
         )}
-            </ViewTransition>
 
         <WatchActions 
           servers={sources} 
