@@ -213,6 +213,7 @@ export interface HeroSlideData {
   episodeCurrent: string;
   images?: ImageAssets;
   episodes?: EpisodeServer[];
+  episodes2?: EpisodeServer[];
   trailer_url?: string;
   actor?: string[];
   director?: string[];

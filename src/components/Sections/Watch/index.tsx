@@ -26,18 +26,18 @@ export default async function Watch({slug, watchParams}: {slug: string, watchPar
             notFound();
         }
 
-        // @ts-expect-error
-        const transformData = mapperData(data1?.item, data1?.APP_DOMAIN_CDN_IMAGE);
-        // @ts-expect-error
-        const deepImageData = await deepMergeImage(transformData, data1?.item?.slug);
-        const movie = deepImageData;
+        if (!data1?.item) notFound();
+
+        const transformData = mapperData(data1.item, data1.APP_DOMAIN_CDN_IMAGE || '');
+        const deepImageData = await deepMergeImage(transformData, data1.item.slug);
         
         const hasCategoryInUrl = watchParams.length > 1;
         const urlCategory = hasCategoryInUrl ? watchParams[0] : 'vietsub';
         const urlEpisodeSlug = hasCategoryInUrl ? watchParams[1] : watchParams[0];
 
-        const primaryServers: EpisodeServer[] = movie.episodes || [];
+        const primaryServers: EpisodeServer[] = deepImageData.episodes || [];
         const secondaryServers: EpisodeServer[] = data2.episodes || [];
+        const movie = { ...deepImageData, episodes2: secondaryServers };
         let targetEpisodeInfo: EpisodeData | null = null;
         for (const server of primaryServers) {
             const found = server.server_data.find(ep => ep.slug === urlEpisodeSlug);
