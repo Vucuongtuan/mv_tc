@@ -1,43 +1,51 @@
+// ==========================================
+// Hero Section - Apple TV Style (2-col seamless)
+// ==========================================
+
+$bg-color: #151315;
+
 .hero {
-  @apply relative aspect-wide mx-auto max-h-[1200px];
-  @media (max-width: 1024px) {
-    aspect-ratio: 16/9;
-  }
+  @apply relative w-full overflow-hidden;
+  height: 85vh;
+  max-height: 900px;
+  min-height: 500px;
+  background-color: $bg-color;
 
   @media (max-width: 768px) {
+    height: auto;
     aspect-ratio: 9/14;
-    min-height: 500px;
+    min-height: 450px;
   }
-}
-.heroContainer {
-  @apply relative w-full h-full max-w-screen-3xl mx-auto;
-  background-color: #151315;
 }
 
 .slide {
   @apply absolute inset-0 w-full h-full;
-  background-color: #151315;
-}
-
-.background {
-  @apply absolute inset-0 w-full h-full  object-cover;
-  @apply bg-cover bg-center bg-no-repeat;
-  @apply scale-105;
-  transition: transform 8s ease-out;
-}
-
-.slide:hover .background {
-  @apply scale-100;
+  background-color: $bg-color;
 }
 
 .posterWrapper {
-  @apply absolute top-0 right-0 h-full aspect-cinematic;
-  width: 65%;
-  @apply overflow-hidden;
+  @apply absolute top-0 right-0 h-full overflow-hidden;
+  width: 60%;
   z-index: 0;
 
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.75) 42%, black 55%, black 65%, rgba(0,0,0,0.4) 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,0.7) 15%, black 25%, black 70%, rgba(0,0,0,0.5) 82%, rgba(0,0,0,0.2) 92%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.75) 42%, black 55%, black 65%, rgba(0,0,0,0.4) 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,0.7) 15%, black 25%, black 70%, rgba(0,0,0,0.5) 82%, rgba(0,0,0,0.2) 92%, transparent 100%);
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+
   @media (max-width: 768px) {
-    @apply w-full;
+    @apply w-full h-full;
+    width: 100%;
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0%, black 8%, black 55%, transparent 100%),
+      linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    mask-image:
+      linear-gradient(to bottom, transparent 0%, black 8%, black 55%, transparent 100%),
+      linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   }
 }
 
@@ -46,104 +54,101 @@
   object-position: center 20%;
 }
 
-.background {
-  @apply absolute inset-0 w-full h-full object-cover;
-  @apply bg-cover bg-center bg-no-repeat;
-  @apply scale-105;
-  z-index: 1;
-  transition: transform 8s ease-out;
-}
-
-.slide:hover .background {
-  @apply scale-100;
-}
-
 .overlay {
   @apply absolute inset-0;
   z-index: 2;
-  background: linear-gradient(
-    to right,
-    #151315 0%,
-    #151315 40%,
-    rgba(21, 19, 21, 0.9) 55%,
-    rgba(21, 19, 21, 0.7) 65%,
-    rgba(21, 19, 21, 0.4) 80%,
-    transparent 100%
-  );
+
+  background:
+    linear-gradient(
+      to right,
+      $bg-color 0%,
+      $bg-color 25%,
+      rgba(21, 19, 21, 0.85) 35%,
+      rgba(21, 19, 21, 0.4) 50%,
+      transparent 65%
+    );
 
   @media (max-width: 768px) {
-    background: linear-gradient(
-      to top,
-      #151315 0%,
-      rgba(21, 19, 21, 0.95) 30%,
-      rgba(21, 19, 21, 0.7) 60%,
-      rgba(21, 19, 21, 0.4) 80%,
-      transparent 100%
-    );
+    // Mobile: gradient từ dưới lên cho text
+    background:
+      linear-gradient(
+        to top,
+        $bg-color 0%,
+        rgba(21, 19, 21, 0.95) 20%,
+        rgba(21, 19, 21, 0.5) 45%,
+        transparent 70%
+      );
   }
 }
 
 .overlay::before {
   content: '';
-  @apply absolute inset-x-0 top-0 h-32;
-  background: linear-gradient(to bottom, rgba(21, 19, 21, 0.9) 0%, rgba(21, 19, 21, 0.5) 60%, transparent 100%);
+  @apply absolute inset-x-0 top-0;
+  height: 150px;
+  background: linear-gradient(
+    to bottom,
+    rgba(21, 19, 21, 0.6) 0%,
+    rgba(21, 19, 21, 0.2) 60%,
+    transparent 100%
+  );
   z-index: 1;
 }
 
 .overlay::after {
   content: '';
-  @apply absolute inset-x-0 bottom-0 h-40;
-  background: linear-gradient(to top, #151315 10%, rgba(21, 19, 21, 0.8) 50%, transparent 100%);
+  @apply absolute inset-x-0 bottom-0;
+  height: 120px;
+  background: linear-gradient(to top, $bg-color 0%, rgba(21, 19, 21, 0.5) 60%, transparent 100%);
 }
 
-// Content
 .content {
   @apply relative z-10 h-full;
   @apply flex flex-col justify-center;
-  @apply px-12 py-20;
-  @apply max-w-5xl;
+  @apply px-12 py-16 max-w-[850px];
 
   @media (max-width: 768px) {
-    @apply px-4 pb-20 max-w-full;
-    @apply justify-end; /* Mobile: content dồn xuống dưới */
+    @apply px-5 pb-12 pt-0;
+    @apply justify-end items-center text-center;
+    max-width: 100%;
   }
 }
 
 // Title
 .title {
-  @apply text-5xl md:text-7xl font-bold;
-  @apply text-white leading-tight;
+  @apply font-bold text-white leading-tight tracking-tight;
+  font-size: clamp(2rem, 4vw, 3.5rem);
   @apply mb-3;
-  /* Material text shadow nhẹ nhàng hơn */
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 
   @media (max-width: 768px) {
-    @apply text-2xl mb-1; /* Mobile: Tên phim nhỏ gọn */
+    @apply text-2xl mb-2;
     @apply line-clamp-2;
   }
 }
 
+// Subtitle
 .subtitle {
-  @apply text-xl text-white/70 font-medium;
-  @apply mb-6;
+  @apply text-lg text-white/60 font-medium;
+  @apply mb-5;
+  letter-spacing: 0.02em;
 
   @media (max-width: 768px) {
-    @apply text-sm mb-4;
+    @apply text-sm mb-3;
   }
 }
 
+// Meta info
 .metaCompact {
-  @apply flex items-center gap-3 mb-6;
-  @apply flex-wrap text-sm md:text-base font-medium text-white/90;
+  @apply flex items-center gap-2.5 mb-5;
+  @apply flex-wrap text-sm font-medium text-white/80;
 
   @media (max-width: 768px) {
-    @apply gap-2 mb-4 text-xs;
+    @apply gap-2 mb-4 text-xs justify-center;
   }
 }
 
 .ratingBox {
-  @apply flex items-center gap-1.5 text-[#cbf3d2] font-bold;
-  @apply px-2 py-0.5 rounded-lg bg-[#46d369]/20 backdrop-blur-sm;
+  @apply flex items-center gap-1 text-[#46d369] font-bold text-sm;
 }
 
 .dot {
@@ -151,170 +156,103 @@
 }
 
 .qualityBox {
-  @apply px-2 py-0.5 rounded-md text-xs font-bold;
-  @apply bg-white/10 backdrop-blur-md;
+  @apply px-2 py-0.5 rounded text-xs font-bold;
+  @apply bg-white/15 backdrop-blur-sm;
   @apply text-white/90 uppercase tracking-wider;
-  /* Loại bỏ border cứng, dùng soft shadow/bg */
 }
 
 .metaText {
-  @apply text-white/80;
+  @apply text-white/70;
 }
 
 // Genres
 .genres {
-  @apply flex items-center gap-2 mb-8;
+  @apply flex items-center gap-2 mb-6;
   @apply flex-wrap;
 
   @media (max-width: 768px) {
-    @apply gap-2 mb-6;
+    @apply gap-1.5 mb-5 justify-center;
   }
 }
 
 .genre {
-  @apply px-3 py-1 rounded-full; /* Material chip shape */
-  @apply text-sm text-white/80 font-medium;
-  @apply bg-white/5 backdrop-blur-md;
-  @apply transition-colors cursor-pointer;
-  @apply border border-white/5 hover:bg-white/10 hover:text-white;
+  @apply text-sm text-white/60 font-medium;
+
+  &:not(:last-child)::after {
+    content: '·';
+    @apply ml-2 text-white/30;
+  }
 
   @media (max-width: 768px) {
-    @apply text-xs px-2.5;
+    @apply text-xs;
   }
 }
 
 // Description
 .description {
-  @apply text-base text-white/75 leading-relaxed;
-  @apply max-w-xl mb-10;
-  @apply line-clamp-3; /* Giới hạn 3 dòng */
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  @apply text-base text-white/60 leading-relaxed;
+  @apply max-w-lg mb-8;
+  @apply line-clamp-3;
 
   @media (max-width: 768px) {
-    @apply text-sm mb-8 line-clamp-2;
+    @apply text-sm mb-6 line-clamp-2;
+    @apply max-w-full;
   }
 }
 
 // Actions
 .actions {
   @apply flex items-center gap-4;
+
+  @media (max-width: 768px) {
+    @apply justify-center;
+  }
 }
 
 .primaryBtn {
-  @apply inline-flex items-center gap-2;
-  @apply px-8 py-3.5 rounded-full; /* Material pill shape */
-  @apply text-base font-bold text-black;
+  @apply inline-flex items-center gap-2.5;
+  @apply px-10 py-3.5 rounded-xl;
+  @apply text-base font-semibold;
   @apply cursor-pointer border-none;
-  @apply transition-colors duration-200; /* Chỉ transition màu */
-  background: white;
-  
+  @apply transition-all duration-300;
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
+
   &:hover {
-    @apply bg-white/90; /* Hover nhẹ nhàng */
+    background: #fff;
+    transform: scale(1.03);
+    box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15);
   }
 
-  /* Ripple effect giả lập bằng active state */
   &:active {
-    @apply bg-white/80;
+    transform: scale(0.98);
   }
 
   @media (max-width: 768px) {
-    @apply px-6 py-3 text-sm;
+    @apply px-8 py-3 text-sm rounded-lg;
   }
 }
 
 .secondaryBtn {
   @apply inline-flex items-center gap-2;
-  @apply px-8 py-3.5 rounded-full; /* Material pill shape */
-  @apply text-base font-bold text-white;
+  @apply px-8 py-3.5 rounded-xl;
+  @apply text-base font-semibold text-white;
   @apply cursor-pointer;
-  @apply bg-white/10 backdrop-blur-xl; /* Glassmorphism mạnh */
-  @apply border border-white/10;
-  @apply transition-colors duration-200;
+  @apply transition-all duration-300;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   &:hover {
-    @apply bg-white/20; /* Tăng độ sáng nền khi hover */
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.03);
   }
 
   &:active {
-    @apply bg-white/10;
+    transform: scale(0.98);
   }
 
   @media (max-width: 768px) {
-    @apply px-6 py-3 text-sm;
+    @apply px-6 py-3 text-sm rounded-lg;
   }
-}
-
-// Pagination with Thumbnails
-.pagination {
-  @apply absolute bottom-8 right-12;
-  @apply flex items-center gap-3;
-  @apply z-20;
-  @apply p-2 rounded-xl;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-
-  @media (max-width: 768px) {
-    @apply gap-1.5 bottom-2 p-1.5;
-    @apply left-1/2 -translate-x-1/2 right-auto;
-  }
-}
-
-.paginationItem {
-  @apply relative cursor-pointer;
-  @apply border-2 border-transparent rounded-lg;
-  @apply transition-all duration-300;
-  @apply overflow-hidden;
-  width: 100px;
-  height: 56px;
-
-  &:hover {
-    @apply border-white/50;
-    transform: scale(1.05);
-  }
-
-  &.active {
-    @apply border-yellow-400;
-    box-shadow: 0 0 15px rgba(245, 197, 24, 0.4);
-  }
-
-  @media (max-width: 768px) {
-    width: 50px;
-    height: 28px;
-  }
-}
-
-.thumbnailWrapper {
-  @apply relative w-full h-full;
-}
-
-.thumbnail {
-  @apply object-cover;
-}
-
-.thumbnailOverlay {
-  @apply absolute inset-0;
-  background: rgba(0, 0, 0, 0.3);
-  transition: background 0.3s ease;
-
-  .paginationItem:hover & {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .paginationItem.active & {
-    background: transparent;
-  }
-}
-
-.slideNumber {
-  @apply absolute bottom-1 left-1;
-  @apply text-xs font-bold text-white;
-  @apply px-1.5 py-0.5 rounded;
-  @apply bg-black/60;
-  font-size: 10px;
-}
-
-.paginationProgress {
-  @apply absolute bottom-0 left-0 h-1;
-  background: linear-gradient(90deg, #f5c518 0%, #ffd54f 100%);
-  border-radius: 0 0 6px 6px;
 }

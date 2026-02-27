@@ -31,7 +31,7 @@ export function mapperData(movie: any, cdnImageUrl: string, index?: number): Her
     genres: movie.category?.map((cat: any) => cat.name) || [],
     description: movie.content || 'Đang cập nhật...',
     backgroundImage: getImageUrl(movie.thumb_url) || '',
-    backgroundPoster: getImageUrl(movie.poster_url) || '',
+    backgroundPoster: getImageUrl(movie.poster_url) || movie.poster || '',
     quality: movie.quality || 'HD',
     episodeCurrent: movie.episode_current || '',
     episodes: movie.episodes || [],

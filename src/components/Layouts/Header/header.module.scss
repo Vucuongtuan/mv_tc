@@ -73,6 +73,53 @@
   }
 }
 
+// AI Nav Link - nổi bật với gradient + animation
+.aiNavLink {
+  @apply relative flex items-center gap-1.5;
+  @apply px-3.5 py-2 rounded-lg;
+  @apply text-sm font-semibold no-underline whitespace-nowrap;
+  @apply transition-all duration-300 ease-out;
+  color: #c084fc;
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+
+  &:hover {
+    color: #e9d5ff;
+    background: linear-gradient(135deg, rgba(192, 132, 252, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+    border-color: rgba(192, 132, 252, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.25);
+  }
+}
+
+.aiNavIcon {
+  @apply transition-transform duration-500 ease-out;
+  animation: sparkle 2s ease-in-out infinite;
+
+  .aiNavLink:hover & {
+    animation: sparkle 0.6s ease-in-out infinite;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.2) rotate(15deg); opacity: 0.8; }
+}
+
+.aiBadge {
+  @apply inline-flex items-center justify-center;
+  @apply px-1.5 py-0.5 rounded;
+  @apply text-[9px] font-bold uppercase tracking-wider;
+  color: #000;
+  background: linear-gradient(135deg, #c084fc 0%, #8b5cf6 100%);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 .newBadge {
   @apply inline-flex items-center justify-center;
   @apply px-1.5 py-0.5 rounded;

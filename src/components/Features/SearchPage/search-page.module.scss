@@ -17,26 +17,23 @@
   @apply text-sm md:text-base text-white/50 mb-8 max-w-md;
 }
 
-// Mode Toggle
-.modeToggle {
-  @apply flex items-center gap-2 mb-8;
-  @apply bg-white/5 border border-white/10 rounded-full p-1;
-}
-
-.modeBtn {
+// AI Link
+.aiLink {
+  @apply inline-flex items-center gap-2 mb-8;
   @apply px-5 py-2.5 rounded-full text-sm font-medium;
   @apply transition-all duration-300 ease-out cursor-pointer;
-  @apply text-white/60 border-none bg-transparent;
+  @apply text-white/60 no-underline;
+  @apply border border-white/10 bg-white/5;
 
   &:hover {
-    @apply text-white/90;
+    @apply text-white bg-white/10 border-white/20;
+    transform: translateY(-1px);
   }
+}
 
-  &.active {
-    @apply text-white;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.7));
-    box-shadow: 0 4px 16px hsl(var(--primary) / 0.3);
-  }
+.aiInlineLink {
+  @apply text-primary font-medium no-underline;
+  @apply hover:underline;
 }
 
 // Search Input

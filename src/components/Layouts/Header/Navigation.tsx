@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styles from './header.module.scss';
+import { Sparkles } from 'lucide-react';
 
 const menuItems = [
   { label: 'Phim Lẻ', href: '/t/phim-le' },
@@ -18,6 +19,11 @@ export default function Navigation() {
           {item.label}
         </Link>
       ))}
+      <Link href="/ai-chat" className={styles.aiNavLink}>
+        <Sparkles size={14} className={styles.aiNavIcon} />
+        <span>AI Phim</span>
+        <span className={styles.aiBadge}>NEW</span>
+      </Link>
     </nav>
   );
 }

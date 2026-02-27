@@ -7,8 +7,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useQuery } from '@tanstack/react-query';
 import { searchMovies } from '@/services/actions';
 import Link from 'next/link';
-import Image from 'next/image';
 import clsx from 'clsx';
+import MovieResultItem from '@/components/Commons/MovieResultItem';
 
 interface SearchBarProps {
   className?: string;
@@ -57,8 +57,7 @@ export default function SearchBar({ className }: SearchBarProps) {
         className={styles.searchInput}
       />
 
-      {/* <div className={clsx(styles.resultWrapper, { [styles.visible]: isOpen && (keyword.length >= 2) })}> */}
-        <div className={clsx(styles.resultWrapper, { [styles.isVisible]: isOpen && (keyword.length >= 2) })}>
+      <div className={clsx(styles.resultWrapper, { [styles.isVisible]: isOpen && (keyword.length >= 2) })}>
         <div className={styles.resultList}>
           {isLoading ? (
             <div className={styles.loading}>
@@ -68,26 +67,12 @@ export default function SearchBar({ className }: SearchBarProps) {
           ) : movies.length > 0 ? (
             <>
               {movies.map((movie) => (
-                <Link 
-                  key={movie._id} 
-                  href={`/phim/${movie.slug}`} 
-                  className={styles.resultItem}
+                <MovieResultItem
+                  key={movie._id}
+                  movie={movie}
+                  cdnImage={`${cdnImage}/uploads/movies`}
                   onClick={() => setIsOpen(false)}
-                >
-                  <div className={styles.itemThumb}>
-                     <Image 
-                        src={`${cdnImage}/uploads/movies/${movie.thumb_url}`} 
-                        alt={movie.name}
-                        width={48}
-                        height={64}
-                        className={styles.thumbImage}
-                     />
-                  </div>
-                  <div className={styles.itemInfo}>
-                    <h4 className={styles.itemName}>{movie.name}</h4>
-                    <p className={styles.itemSub}>{movie.origin_name} ({movie.year})</p>
-                  </div>
-                </Link>
+                />
               ))}
               <Link 
                 href={`/search?keyword=${keyword}`} 
