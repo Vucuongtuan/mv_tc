@@ -8,6 +8,7 @@ import { getIdEmbedYoutube } from '@/utils/embed';
 import { Suspense } from 'react';
 import { getImageUrl } from '@/utils/mapperData';
 import Episodes from '@/components/Features/Episodes';
+import MasonryGallery from '@/components/Features/ImageGallery';
 import { Button } from '@/components/Commons/Button';
 import Share from '@/components/Commons/Share';
 
@@ -30,7 +31,7 @@ export default function MovieInfo({ movie, transformData }: { movie: Movie, tran
         country = [],
         category = [],
         episodeCurrent,
-        images
+        images 
     } = transformData;
 
     const hasEpisodes = episodes.length > 0 && episodes[0].server_data.length > 0;
@@ -124,7 +125,6 @@ export default function MovieInfo({ movie, transformData }: { movie: Movie, tran
             )}
                 </div>
 
-                {/* RIGHT COLUMN: Info & Cast */}
                 <aside className={st.rightSidebar}>
                     <section className={st.infoBox} aria-labelledby="details-heading">
                         <h3 id="details-heading">Thông tin chi tiết</h3>
@@ -161,7 +161,15 @@ export default function MovieInfo({ movie, transformData }: { movie: Movie, tran
                 </aside>
             </div>
 
-          
+            {images && (images.poster?.length || images.backdrop?.length) ? (
+                <div className="mt-8">
+                    <Suspense fallback={<div>Đang tải thư viện ảnh...</div>}>
+                        <MasonryGallery 
+                            images={[...(images.backdrop || []), ...(images.poster || [])]} 
+                        />
+                    </Suspense>
+                </div>
+            ) : null}
         </article>
     );
 }
