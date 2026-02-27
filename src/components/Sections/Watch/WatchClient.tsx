@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie, EpisodeServer, HeroSlideData, EpisodeData } from '@/types/type';
+import { EpisodeServer, HeroSlideData, EpisodeData } from '@/types/type';
 import st from './watch-page.module.scss';
 import WatchHeader from './WatchHeader';
 import WatchActions from './WatchActions';
@@ -14,11 +14,15 @@ import VideoPlayer from '@/components/Features/VideoPlayer';
 import { BreadcrumbJsonLd } from '@/components/Commons/JsonLd';
 import { useRouter } from 'next/navigation';
 
+export interface EpisodeSource extends EpisodeData {
+  server_name: string;
+}
+
 interface WatchClientProps {
   movie: HeroSlideData;
   currentEpisode: EpisodeData;
   episodes: EpisodeServer[];
-  sources: any[]; 
+  sources: EpisodeSource[];
 }
 
 export default function WatchClient({ movie, currentEpisode, episodes, sources }: WatchClientProps) {
@@ -173,12 +177,12 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
 
         <div className={st.infoGrid}>
           <WatchInfo 
-            movie={movie as any} 
+            movie={movie}
             currentEpisodeName={currentEpisode.name} 
           />
           
           <WatchSidebar 
-            movie={movie as any} 
+            movie={movie}
             episodes={episodes} 
             currentEpisodeSlug={currentEpisode.slug} 
           />
