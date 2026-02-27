@@ -1,0 +1,45 @@
+.tvLayout {
+  display: flex;
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 250px; // Width of sidebar
+  padding: 2rem;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+}
+
+// Global styles for TV focus
+:global(.tv-mode-root) {
+  :global(*:focus) {
+    outline: 3px solid hsl(var(--primary)) !important;
+    outline-offset: 4px;
+    transform: scale(1.02);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), outline 0.1s;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  // Adjust specific components if needed
+  :global(.card) {
+     &:focus {
+        border-color: hsl(var(--primary));
+     }
+  }
+}

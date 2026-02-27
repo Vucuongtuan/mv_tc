@@ -6,6 +6,7 @@ import Navigation from './Navigation';
 
 // Client Components
 import AuthButton, { AuthButtonClient } from './AuthButton';
+import TVModeToggle from '@/components/Features/TVMode/TVModeToggle';
 
 import HeaderBackground from './HeaderBackground';
 import { Suspense } from 'react';
@@ -23,6 +24,7 @@ export default function Header() {
         <Navigation />
 
         <div className={styles.rightSection}>
+          <TVModeToggle />
           <Suspense fallback={<AuthButtonClient />}>
             <AuthButton />
           </Suspense>
