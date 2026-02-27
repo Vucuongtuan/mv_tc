@@ -27,11 +27,12 @@ export default function Episodes({ episodes = [], episodes2 = [], slug }: Episod
     const groups = useMemo(() => {
         const allServers = [...episodes, ...episodes2];
         const result: { [key: string]: { name: string, servers: EpisodeServer[] } } = {};
-        
+         
         allServers.forEach(server => {
             if (!server || !server.server_data) return;
             
             const cat = getServerCategory(server.server_name);
+            
             if (!result[cat]) {
                 result[cat] = {
                     name: cat === 'thuyet-minh' ? 'Thuyết minh' : 'Vietsub',
@@ -42,7 +43,7 @@ export default function Episodes({ episodes = [], episodes2 = [], slug }: Episod
         });
         return result;
     }, [episodes, episodes2]);
-
+    
     const categories = Object.keys(groups);
     const [activeTab, setActiveTab] = useState(categories[0] || 'vietsub');
 
@@ -74,7 +75,6 @@ export default function Episodes({ episodes = [], episodes2 = [], slug }: Episod
         <section className={st.section} aria-labelledby="episodes-heading">
             <h3 id="episodes-heading">Danh sách tập</h3>
             
-            {/* Tabs Header */}
             <div className={st.tabsHeader}>
                 {categories.map((cat) => (
                     <button
@@ -87,7 +87,6 @@ export default function Episodes({ episodes = [], episodes2 = [], slug }: Episod
                 ))}
             </div>
 
-            {/* Episode Grid */}
             <div className={st.serverList}>
                 <ul className={st.episodeGrid}>
                     {currentEpisodeGrid.map((ep: EpisodeData, idx: number) => {

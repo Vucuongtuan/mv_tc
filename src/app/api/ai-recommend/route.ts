@@ -77,7 +77,6 @@ export async function POST(request: NextRequest) {
 
     const aiData = await aiResponse.json();
     const aiContent = aiData.choices?.[0]?.message?.content || '';
-    console.log('AI Content:', aiContent);
 
     let parsed;
     try {

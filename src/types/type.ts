@@ -100,7 +100,7 @@ export interface EpisodeData {
 
 export interface EpisodeServer {
   server_name: string;
-  is_ai: boolean;
+  is_ai?: boolean;
   server_data: EpisodeData[];
 }
 
@@ -182,8 +182,8 @@ export interface MovieListResponse<T> {
   movie: T;
 }
 export interface DetailsResponse extends MovieListData {
-item:Movie
-} 
+  item: MovieDetail;
+}
 
 export interface MovieDetailResponse {
   status: boolean;

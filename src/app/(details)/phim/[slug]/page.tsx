@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import HeroDetails from "@/components/Sections/Hero/HeroDetails";
 import MovieInfo from "@/components/Sections/Movie/MovieInfo";
 import MovieSection from "@/components/Sections/Movie";
@@ -13,6 +14,58 @@ import MovieCarouselLoading from "@/components/Features/MovieCarousel/Loading";
 export async function generateStaticParams(){
     const res = await getSlugGenerateStaticParams(new Date());
     return res.map(s => ({slug: s.slug}));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const [data] = await getDetailsMovie(slug);
+
+    if (!data || !data.item) {
+        return {
+            title: 'Không tìm thấy phim',
+            description: 'Phim bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.',
+        };
+    }
+
+    const seo = data.seoOnPage;
+    
+    // Normalize image paths
+    const getCdnImageUrl = (url?: string) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        return `${data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${url}`;
+    };
+
+    const title = seo?.titleHead || `Phim ${data.item.name} - ${data.item.origin_name}`;
+    const description = seo?.descriptionHead || data.item.content?.replace(/(<([^>]+)>)/gi, "") || '';
+    
+    // Construct images array
+    let images: string[] = [];
+    if (seo?.og_image && seo.og_image.length > 0) {
+        images = seo.og_image.map(getCdnImageUrl);
+    } else {
+        const thumb = getCdnImageUrl(data.item.thumb_url);
+        const poster = getCdnImageUrl(data.item.poster_url);
+        if (thumb) images.push(thumb);
+        if (poster) images.push(poster);
+    }
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: (seo?.og_type as any) || 'video.movie',
+            images,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images,
+        }
+    };
 }
 
 
@@ -34,6 +87,7 @@ function MovieDetailsSkeleton() {
 }
 
 async function MovieDetailsData({ slug }: { slug: string }) {
+    "use memo";
     const [data,err] = await getDetailsMovie(slug);
     if (!data || err || !data.item) return notFound();
 
@@ -74,3 +128,4 @@ export default async function MovieDetailsPage({params}: {params: Promise<{slug:
         </main>
     );
 }
+

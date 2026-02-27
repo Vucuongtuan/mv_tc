@@ -15,9 +15,10 @@ export default function WatchSidebar({
   episodes: EpisodeServer[]; 
   currentEpisodeSlug: string;
 }) {
+  
   return (
     <aside className={st.sidebar}>
-      <Episodes episodes={movie.episodes} episodes2={movie.episodes2} slug={movie.slug}/>
+      <Episodes episodes={episodes || []} episodes2={ []} slug={movie.slug}/>
       <div className={st.castSection}>
         <h3>Diễn viên</h3>
         <div className={st.castGrid}>

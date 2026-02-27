@@ -1,6 +1,4 @@
-'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import { SkipForward, X } from 'lucide-react';
 import st from './watch-page.module.scss';
 import Link from 'next/link';
