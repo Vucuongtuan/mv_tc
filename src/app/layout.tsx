@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Header from "@/components/Layouts/Header";
 import Footer from "@/components/Layouts/Footer";
 import BottomNav from "@/components/Layouts/BottomNav";
+import TVModeLayout from "@/components/Layouts/TVModeLayout";
 import SecurityGuard from "@/components/Commons/SecurityGuard";
 import { ReactQueryClientProvider } from "./provider-tanstack";
 import { WebSiteJsonLd } from "@/components/Commons/JsonLd";
@@ -45,10 +46,13 @@ export default async function RootLayout({
         <SecurityGuard />
         <WebSiteJsonLd />
           <ReactQueryClientProvider>
-              <Header/>
+            <TVModeLayout
+              header={<Header />}
+              footer={<Footer />}
+              bottomNav={<BottomNav />}
+            >
               {children}
-              <Footer/>
-              <BottomNav />
+            </TVModeLayout>
           </ReactQueryClientProvider>
 
       </body>
