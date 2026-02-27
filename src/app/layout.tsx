@@ -9,6 +9,7 @@ import BottomNav from "@/components/Layouts/BottomNav";
 import SecurityGuard from "@/components/Commons/SecurityGuard";
 import { ReactQueryClientProvider } from "./provider-tanstack";
 import { WebSiteJsonLd } from "@/components/Commons/JsonLd";
+import { Suspense } from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -47,7 +48,9 @@ export default async function RootLayout({
           <ReactQueryClientProvider>
               <Header/>
               {children}
+              <Suspense>
               <Footer/>
+              </Suspense>
               <BottomNav />
           </ReactQueryClientProvider>
 

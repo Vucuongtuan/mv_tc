@@ -61,7 +61,8 @@ export async function generateMetadata(
 
 
 export default async function WatchPage({ params }: { params: Promise<{ slug: string, params: string[] }> }) {
-    const { slug, params: watchParams } = await params;
+  "use memo";  
+  const { slug, params: watchParams } = await params;
 
     return (
        <main>

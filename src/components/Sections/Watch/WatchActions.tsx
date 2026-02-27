@@ -3,11 +3,11 @@
 import { Share2, AlertTriangle, List, Server, Cpu, ExternalLink, Sparkles, SkipForward } from 'lucide-react';
 import st from './watch-page.module.scss';
 import { clsx } from 'clsx';
-import { EpisodeServer } from '@/types/type';
+import { EpisodeSource } from './WatchClient';
 import Link from 'next/link';
 
 interface WatchActionsProps {
-  servers: EpisodeServer[];
+  servers: EpisodeSource[];
   selectedServerIndex: number;
   onServerChange: (index: number) => void;
   isEmbed: boolean;
@@ -46,7 +46,7 @@ export default function WatchActions({
                     : "text-white  hover:bg-white/5 hover:text-white"
                 )}
               >
-                #{idx + 1}
+                {server.server_name}
               </button>
             ))}
           </div>

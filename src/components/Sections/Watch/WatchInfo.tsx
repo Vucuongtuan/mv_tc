@@ -3,12 +3,11 @@ import Image from '@/components/Commons/Image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import st from './watch-page.module.scss';
-import { HeroSlideData, Movie } from '@/types/type';
+import { HeroSlideData } from '@/types/type';
 import { getImageUrl } from '@/utils/mapperData';
-import Episodes from '@/components/Features/Episodes';
 import HtmlRender from '@/components/Features/HtmlRender';
 
-export default function WatchInfo({ movie, currentEpisodeName }: { movie: HeroSlideData; currentEpisodeName: string }) {
+export default function WatchInfo({ movie }: { movie: HeroSlideData }) {
   return (
     <div className={st.movieInfo}>
       <div className={st.headerGroup}>

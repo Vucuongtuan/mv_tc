@@ -37,14 +37,12 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
     return false;
   });
 
-  // --- Next Episode Logic ---
   const [showNextPopup, setShowNextPopup] = useState(false);
   const [countdown, setCountdown] = useState(30);
   const nextPopupDismissed = useRef(false);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
 
   const nextEpisode = useMemo(() => {
-    // Tìm tập hiện tại trong server_data rồi lấy tập kế
     const serverData = episodes[0]?.server_data || [];
     const currentIndex = serverData.findIndex(ep => ep.slug === currentEpisode.slug);
     if (currentIndex >= 0 && currentIndex < serverData.length - 1) {
@@ -55,7 +53,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
 
   const nextEpisodeUrl = nextEpisode ? `/phim/${movie.slug}/${nextEpisode.slug}` : null;
 
-  // Reset popup state khi chuyển tập
   useEffect(() => {
     setShowNextPopup(false);
     setCountdown(30);
@@ -66,7 +63,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
     }
   }, [currentEpisode.slug]);
 
-  // Countdown timer khi popup hiện
   useEffect(() => {
     if (showNextPopup && nextEpisodeUrl) {
       countdownRef.current = setInterval(() => {
@@ -95,7 +91,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
     }
   }, []);
 
-  // onTimeUpdate: detect khi còn 30s → hiện popup (chỉ HLS)
   const handleTimeUpdate = useCallback((currentTime: number, duration: number) => {
     if (!nextEpisode || nextPopupDismissed.current || isEmbed) return;
     const remaining = duration - currentTime;
@@ -153,7 +148,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
             />
         </Suspense>
 
-        {/* Next Episode Popup — chỉ hiện khi HLS + có tập tiếp */}
         {!isEmbed && nextEpisode && (
           <NextEpisodePopup
             movieSlug={movie.slug!}
@@ -178,7 +172,6 @@ export default function WatchClient({ movie, currentEpisode, episodes, sources }
         <div className={st.infoGrid}>
           <WatchInfo 
             movie={movie}
-            currentEpisodeName={currentEpisode.name} 
           />
           
           <WatchSidebar 
