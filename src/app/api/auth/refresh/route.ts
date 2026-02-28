@@ -33,7 +33,7 @@ export async function POST() {
              return NextResponse.json({ error: 'Access token not found in response' }, { status: 500 });
         }
 
-        const response = NextResponse.json({ success: true, accessToken: data.data.access_token });
+        const response = NextResponse.json({ success: true });
 
         response.cookies.set('tc_access_token', data.data.access_token, {
             httpOnly: true,

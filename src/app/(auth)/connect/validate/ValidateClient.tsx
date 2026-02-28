@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { handleAuthAction } from "./actions";
 import { useRouter } from "next/navigation";
 
@@ -14,9 +14,15 @@ export default function ValidateClient({ code, callback, type }: ValidateClientP
     const [status, setStatus] = useState<'loading' | 'error' | 'success'>('loading');
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
+    const isProcessed = useRef(false);
 
     useEffect(() => {
+        if (isProcessed.current) return;
+        
         const performAuth = async () => {
+             isProcessed.current = true;
+             const safeCallback = (callback && callback.startsWith('/')) ? callback : '/';
+
             try {
                 if (type === 'logout') {
                     await handleAuthAction({ type: 'logout' });
@@ -28,7 +34,7 @@ export default function ValidateClient({ code, callback, type }: ValidateClientP
                     const res = await fetch('/api/auth/refresh', { method: 'POST' });
                     if (res.ok) {
                         setStatus('success');
-                        router.push(callback || '/');
+                        router.push(safeCallback);
                     } else {
                         const data = await res.json();
                         setErrorMessage(data.error || 'Refresh failed');

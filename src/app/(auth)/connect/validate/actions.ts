@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 
 export async function handleAuthAction({ code, callback, type }: { code?: string, callback?: string, type?: string }) {
     const actionType = type || 'login';
-    let targetUrl = callback || '/';
+    // Validate callback to prevent Open Redirect
+    let targetUrl = (callback && callback.startsWith('/')) ? callback : '/';
 
     if (actionType === 'login' || actionType === 'register') {
         if (!code) {
@@ -54,7 +55,6 @@ export async function handleAuthAction({ code, callback, type }: { code?: string
             return { error: 'Internal server error during authentication' };
         }
         
-        // Redirect phải nằm ngoài try-catch
         redirect(targetUrl);
 
     } else if (actionType === 'logout') {
@@ -67,7 +67,6 @@ export async function handleAuthAction({ code, callback, type }: { code?: string
     redirect(targetUrl);
 }
 
-// Thêm một action để check auth từ Server vì tc_access_token là httpOnly
 export async function checkServerAuth() {
     const cookieStore = await cookies();
     return cookieStore.has('tc_access_token');

@@ -16,7 +16,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.URL || 'https://tcphim.vercel.app'),
   title: {
     default: 'TC Phim',
     template: '%s | TC Phim'
@@ -51,7 +51,9 @@ export default async function RootLayout({
               <Suspense>
               <Footer/>
               </Suspense>
+              <Suspense>
               <BottomNav />
+              </Suspense>
           </ReactQueryClientProvider>
 
       </body>
